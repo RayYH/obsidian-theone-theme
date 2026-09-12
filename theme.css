@@ -1,0 +1,1317 @@
+/* ==========================================================================
+   TheOne — a cool-modern Obsidian theme
+   Light + dark · indigo→violet accent · rounded · system sans
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* fonts */
+  --font-interface: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-text: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-monospace: "SF Mono", "JetBrains Mono", "Fira Code", ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+
+  /* radius scale */
+  --radius-s: 6px;
+  --radius-m: 8px;
+  --radius-l: 12px;
+
+  /* surfaces */
+  --background-primary: #f7f8fa;
+  --background-primary-alt: #eef0f4;
+  --background-secondary: #eef0f4;
+  --background-secondary-alt: #e5e8ee;
+
+  --background-modifier-border: #e2e6ee;
+  --background-modifier-form-field: #f1f3f7;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --background-modifier-box-shadow: rgba(23, 29, 40, 0.14);
+  --background-modifier-success: #10b981;
+  --background-modifier-error: #ef4444;
+  --background-modifier-error-hover: #dc2626;
+  --background-modifier-hover: rgba(23, 29, 40, 0.06);
+
+  /* text */
+  --text-normal: #232936;
+  --text-muted: #5b6474;
+  --text-faint: #9aa3b2;
+
+  --text-accent: #6366f1;
+  --text-accent-hover: #4f46e5;
+  --text-on-accent: #ffffff;
+  --text-selection: rgba(99, 102, 241, 0.16);
+
+  /* interactive */
+  --interactive-normal: #e8ebf1;
+  --interactive-hover: #dde1e9;
+  --interactive-accent: #6366f1;
+  --interactive-accent-hover: #4f46e5;
+
+  /* accent (HSL, drives Obsidian's accent system) */
+  --accent-h: 239;
+  --accent-s: 84%;
+  --accent-l: 67%;
+
+  /* semantic colors */
+  --color-red: #e5484d;
+  --color-orange: #f76b15;
+  --color-yellow: #b45309;
+  --color-green: #059669;
+  --color-cyan: #0891b2;
+  --color-blue: #2563eb;
+  --color-purple: #8b5cf6;
+  --color-pink: #db2777;
+
+  --color-red-rgb: 229, 72, 77;
+  --color-orange-rgb: 247, 107, 21;
+  --color-yellow-rgb: 180, 83, 9;
+  --color-green-rgb: 5, 150, 105;
+  --color-cyan-rgb: 8, 145, 178;
+  --color-blue-rgb: 37, 99, 235;
+  --color-purple-rgb: 139, 92, 246;
+  --color-pink-rgb: 219, 39, 119;
+  --text-muted-rgb: 91, 100, 116;
+
+  --accent-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+
+  /* links & lists */
+  --link-color: var(--text-accent);
+  --link-color-hover: var(--text-accent-hover);
+  --link-external-color: var(--color-cyan);
+  --link-external-color-hover: var(--color-cyan);
+  --list-indent: 1.25em;
+}
+
+.theme-dark {
+  --background-primary: #10131a;
+  --background-primary-alt: #161a23;
+  --background-secondary: #151922;
+  --background-secondary-alt: #11141b;
+
+  --background-modifier-border: #2a303c;
+  --background-modifier-form-field: #1a1e27;
+  --background-modifier-form-field-highlighted: #222734;
+  --background-modifier-box-shadow: rgba(0, 0, 0, 0.5);
+  --background-modifier-success: #34d399;
+  --background-modifier-error: #f87171;
+  --background-modifier-error-hover: #fca5a5;
+  --background-modifier-hover: rgba(223, 228, 238, 0.06);
+
+  --text-normal: #dfe4ee;
+  --text-muted: #8b94a6;
+  --text-faint: #5c6474;
+
+  --text-accent: #818cf8;
+  --text-accent-hover: #a5b4fc;
+  --text-on-accent: #10131a;
+  --text-selection: rgba(129, 140, 248, 0.24);
+
+  --interactive-normal: #232936;
+  --interactive-hover: #2b3140;
+  --interactive-accent: #818cf8;
+  --interactive-accent-hover: #a5b4fc;
+
+  --accent-h: 234;
+  --accent-s: 89%;
+  --accent-l: 74%;
+
+  --color-red: #f87171;
+  --color-orange: #fb923c;
+  --color-yellow: #fbbf24;
+  --color-green: #34d399;
+  --color-cyan: #22d3ee;
+  --color-blue: #60a5fa;
+  --color-purple: #c084fc;
+  --color-pink: #f472b6;
+
+  --color-red-rgb: 248, 113, 113;
+  --color-orange-rgb: 251, 146, 60;
+  --color-yellow-rgb: 251, 191, 36;
+  --color-green-rgb: 52, 211, 153;
+  --color-cyan-rgb: 34, 211, 238;
+  --color-blue-rgb: 96, 165, 250;
+  --color-purple-rgb: 192, 132, 252;
+  --color-pink-rgb: 244, 114, 182;
+  --text-muted-rgb: 139, 148, 166;
+
+  --accent-gradient: linear-gradient(135deg, #818cf8, #c084fc);
+
+  --link-color: var(--text-accent);
+  --link-color-hover: var(--text-accent-hover);
+  --link-external-color: var(--color-cyan);
+  --link-external-color-hover: var(--color-cyan);
+}
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
+
+body {
+  font-family: var(--font-interface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--text-selection);
+}
+
+:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 1px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Editor & prose
+   -------------------------------------------------------------------------- */
+
+.markdown-source-view,
+.markdown-preview-view,
+.markdown-rendered {
+  font-family: var(--font-text);
+  line-height: 1.7;
+  color: var(--text-normal);
+}
+
+/* Headings ---------------------------------------------------------------- */
+
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3,
+.markdown-rendered h4,
+.markdown-rendered h5,
+.markdown-rendered h6,
+.HyperMD-header-1,
+.HyperMD-header-2,
+.HyperMD-header-3,
+.HyperMD-header-4,
+.HyperMD-header-5,
+.HyperMD-header-6,
+.cm-header {
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--text-normal);
+}
+
+.markdown-rendered h1,
+.HyperMD-header-1,
+.cm-header-1 {
+  font-size: 1.85em;
+  margin-top: 1.6em;
+  margin-bottom: 0.4em;
+}
+.markdown-rendered h2,
+.HyperMD-header-2,
+.cm-header-2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-top: 1.6em;
+  margin-bottom: 0.7em;
+}
+.markdown-rendered h3,
+.HyperMD-header-3,
+.cm-header-3 {
+  font-size: 1.25em;
+  font-weight: 700;
+  margin-top: 1.3em;
+  margin-bottom: 0.45em;
+}
+.markdown-rendered h4,
+.HyperMD-header-4,
+.cm-header-4 {
+  font-size: 1.08em;
+  font-weight: 600;
+  margin-top: 1.1em;
+  margin-bottom: 0.3em;
+}
+.markdown-rendered h5,
+.HyperMD-header-5,
+.cm-header-5 {
+  font-size: 0.98em;
+  font-weight: 600;
+  margin-top: 1em;
+  color: var(--text-accent);
+}
+.markdown-rendered h6,
+.HyperMD-header-6,
+.cm-header-6 {
+  font-size: 0.82em;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* H2 — section title: hairline with a gradient accent segment */
+.markdown-rendered h2 {
+  position: relative;
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+.markdown-rendered h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 3.2em;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--text-accent), var(--color-purple));
+}
+
+/* H3 — left gradient bar */
+.markdown-rendered h3 {
+  position: relative;
+  padding-left: 0.65em;
+}
+.markdown-rendered h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.16em;
+  bottom: 0.16em;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--accent-gradient);
+}
+
+/* H4 — accent dot marker */
+.markdown-rendered h4::before {
+  content: "";
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  margin-right: 0.45em;
+  border-radius: 50%;
+  background: var(--text-accent);
+  vertical-align: 0.04em;
+}
+
+/* H1 — centered, gradient title in a glowing framed box */
+.markdown-rendered h1 {
+  font-size: 1.8em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin: 1.4rem auto 1.2rem !important;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid var(--background-modifier-border) !important;
+  border-radius: 16px;
+  background-image: var(--accent-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  box-shadow: 0 10px 40px -18px var(--text-selection);
+}
+.markdown-rendered h1::after {
+  content: "";
+  display: block;
+  width: min(16rem, 60%);
+  height: 2px;
+  margin: 0.6rem auto 0;
+  border-radius: 2px;
+  background: var(--accent-gradient);
+  opacity: 0.9;
+}
+@media (max-width: 480px) {
+  .markdown-rendered h1 {
+    font-size: 1.5em;
+    padding: 0.55rem 0.8rem;
+    border-radius: 12px;
+  }
+}
+
+/* inline code inside the gradient-text H1 — reset the transparent text fill */
+.markdown-rendered h1 code,
+.markdown-rendered h1 .cm-inline-code {
+  color: var(--text-accent);
+  -webkit-text-fill-color: var(--text-accent);
+}
+
+/* Links ------------------------------------------------------------------- */
+
+a,
+.cm-link,
+.cm-url {
+  color: var(--text-accent);
+  text-decoration: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+a:hover {
+  color: var(--text-accent-hover);
+}
+
+/* Wikilinks — [[Note]] — indigo */
+.markdown-rendered a.internal-link,
+.cm-hmd-internal-link {
+  color: var(--text-accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+.markdown-rendered a.internal-link:hover,
+.cm-hmd-internal-link:hover {
+  text-decoration: none;
+  background-image: linear-gradient(90deg, var(--text-accent), var(--color-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* URLs — https://… — cyan + underline, distinct from wikilinks */
+.markdown-rendered a.external-link,
+.cm-url {
+  color: var(--color-cyan);
+  background-image: none; /* drop the default ↗ icon */
+  padding-right: 0;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-cyan);
+}
+.markdown-rendered a.external-link:hover,
+.cm-url:hover {
+  color: var(--color-cyan);
+  border-bottom-color: var(--text-accent);
+}
+
+/* Inline code ------------------------------------------------------------- */
+
+.markdown-rendered code,
+.cm-inline-code {
+  font-family: var(--font-monospace);
+  font-size: 0.9em;
+  color: var(--text-accent);
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  padding: 0.12em 0.4em;
+}
+
+/* Bold / italic / strikethrough ------------------------------------------ */
+
+.markdown-rendered strong,
+.cm-strong {
+  font-weight: 700;
+  color: var(--text-accent);
+}
+
+.markdown-rendered em,
+.cm-em {
+  font-style: italic;
+  color: var(--color-purple);
+}
+
+/* bold + italic — indigo→violet gradient */
+.markdown-rendered strong em,
+.markdown-rendered em strong,
+.cm-strong.cm-em,
+.cm-em .cm-strong,
+.cm-strong .cm-em {
+  font-weight: 700;
+  font-style: italic;
+  background-image: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.markdown-rendered del,
+.cm-strikethrough {
+  color: var(--text-faint);
+  text-decoration-color: var(--text-faint);
+}
+
+/* Highlights -------------------------------------------------------------- */
+
+.markdown-rendered mark,
+.cm-highlight {
+  background: rgba(99, 102, 241, 0.18);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0.05em 0.2em;
+}
+
+/* --------------------------------------------------------------------------
+   4. Tags
+   -------------------------------------------------------------------------- */
+
+a.tag,
+.cm-hashtag {
+  background: rgba(99, 102, 241, 0.09);
+  color: var(--text-accent);
+  border: 1px solid rgba(99, 102, 241, 0.16);
+  border-radius: 999px;
+  padding: 1px 10px;
+  font-size: 0.82em;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+a.tag:hover,
+.cm-hashtag:hover {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   5. Callouts
+   -------------------------------------------------------------------------- */
+
+.callout {
+  --callout-color: var(--color-blue-rgb);
+  position: relative;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-l);
+  background: rgba(var(--callout-color), 0.06);
+  padding: 0.9em 1.2em 0.9em 1.35em;
+}
+.callout::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+  background: linear-gradient(180deg, rgb(var(--callout-color)), rgba(var(--callout-color), 0.35));
+}
+.callout-title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: rgb(var(--callout-color));
+}
+.callout-icon {
+  color: rgb(var(--callout-color));
+}
+
+/* per-type callout colors */
+.callout[data-callout="note"],
+.callout[data-callout="info"],
+.callout[data-callout="todo"] {
+  --callout-color: var(--color-blue-rgb);
+}
+.callout[data-callout="abstract"],
+.callout[data-callout="summary"],
+.callout[data-callout="tldr"],
+.callout[data-callout="tip"],
+.callout[data-callout="hint"],
+.callout[data-callout="important"] {
+  --callout-color: var(--color-cyan-rgb);
+}
+.callout[data-callout="success"],
+.callout[data-callout="check"],
+.callout[data-callout="done"] {
+  --callout-color: var(--color-green-rgb);
+}
+.callout[data-callout="question"],
+.callout[data-callout="help"],
+.callout[data-callout="faq"] {
+  --callout-color: var(--color-yellow-rgb);
+}
+.callout[data-callout="warning"],
+.callout[data-callout="caution"],
+.callout[data-callout="attention"] {
+  --callout-color: var(--color-orange-rgb);
+}
+.callout[data-callout="failure"],
+.callout[data-callout="fail"],
+.callout[data-callout="missing"],
+.callout[data-callout="danger"],
+.callout[data-callout="error"],
+.callout[data-callout="bug"] {
+  --callout-color: var(--color-red-rgb);
+}
+.callout[data-callout="example"] {
+  --callout-color: var(--color-purple-rgb);
+}
+.callout[data-callout="quote"],
+.callout[data-callout="cite"] {
+  --callout-color: var(--text-muted-rgb);
+}
+.callout-content {
+  color: var(--text-normal);
+}
+.callout-content > :first-child {
+  margin-top: 0.35em;
+}
+
+/* --------------------------------------------------------------------------
+   6. Code blocks
+   -------------------------------------------------------------------------- */
+
+.markdown-rendered pre,
+.HyperMD-codeblock,
+.cm-s-obsidian .HyperMD-codeblock-begin-bg,
+.cm-s-obsidian .HyperMD-codeblock-end-bg {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-l);
+  padding: 1em;
+  font-family: var(--font-monospace);
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+.markdown-rendered pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--text-normal);
+}
+
+/* subtle syntax colors */
+.cm-s-obsidian span.cm-keyword { color: var(--color-purple); }
+.cm-s-obsidian span.cm-string { color: var(--color-green); }
+.cm-s-obsidian span.cm-number { color: var(--color-orange); }
+.cm-s-obsidian span.cm-comment { color: var(--text-faint); font-style: italic; }
+.cm-s-obsidian span.cm-operator { color: var(--color-cyan); }
+.cm-s-obsidian span.cm-builtin { color: var(--color-blue); }
+
+/* --------------------------------------------------------------------------
+   7. Tables
+   -------------------------------------------------------------------------- */
+
+.markdown-rendered table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  border: 1px solid var(--background-modifier-border);
+}
+.markdown-rendered th {
+  background: var(--background-secondary);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.markdown-rendered th,
+.markdown-rendered td {
+  border: 1px solid var(--background-modifier-border);
+  border-top: none;
+  border-left: none;
+  padding: 0.5em 0.85em;
+}
+.markdown-rendered tbody tr:nth-child(even) {
+  background: rgba(99, 102, 241, 0.03);
+}
+.markdown-rendered tbody tr:hover {
+  background: rgba(99, 102, 241, 0.06);
+}
+
+/* --------------------------------------------------------------------------
+   8. Blockquotes
+   -------------------------------------------------------------------------- */
+
+.markdown-rendered blockquote {
+  position: relative;
+  border: none;
+  margin: 1em 0;
+  padding: 0.6em 1.1em 0.6em 1.35em;
+  background: var(--background-primary-alt);
+  border-radius: var(--radius-m);
+  color: var(--text-muted);
+}
+.markdown-rendered blockquote::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+  background: linear-gradient(180deg, var(--text-accent), var(--color-purple));
+}
+
+/* --------------------------------------------------------------------------
+   9. Task lists & checkboxes
+   -------------------------------------------------------------------------- */
+
+.markdown-rendered .task-list-item input[type="checkbox"],
+.HyperMD-task-line input[type="checkbox"],
+input.task-list-item-checkbox {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  margin: 0 0.35em 0 0;
+  border-radius: 4px;
+  border: 1.5px solid var(--text-faint);
+  background: transparent;
+  cursor: pointer;
+  vertical-align: -0.05em;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.markdown-rendered .task-list-item input[type="checkbox"]:hover,
+.HyperMD-task-line input[type="checkbox"]:hover,
+input.task-list-item-checkbox:hover {
+  border-color: var(--interactive-accent);
+}
+.markdown-rendered .task-list-item input[type="checkbox"]::after,
+.HyperMD-task-line input[type="checkbox"]::after,
+input.task-list-item-checkbox::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.72em;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* done */
+.markdown-rendered .task-list-item[data-task="x"] input[type="checkbox"],
+.markdown-rendered .task-list-item[data-task="X"] input[type="checkbox"],
+.HyperMD-task-line[data-task="x"] input[type="checkbox"],
+.HyperMD-task-line[data-task="X"] input[type="checkbox"] {
+  background: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+}
+.markdown-rendered .task-list-item[data-task="x"] input[type="checkbox"]::after,
+.markdown-rendered .task-list-item[data-task="X"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="x"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="X"] input[type="checkbox"]::after {
+  content: "✓";
+  color: var(--text-on-accent);
+}
+
+/* cancelled */
+.markdown-rendered .task-list-item[data-task="-"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="-"] input[type="checkbox"]::after {
+  content: "✕";
+  color: var(--text-faint);
+}
+
+/* in-progress */
+.markdown-rendered .task-list-item[data-task="/"] input[type="checkbox"],
+.HyperMD-task-line[data-task="/"] input[type="checkbox"] {
+  border-color: var(--interactive-accent);
+  background: var(--text-selection);
+}
+.markdown-rendered .task-list-item[data-task="/"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="/"] input[type="checkbox"]::after {
+  content: "◐";
+  color: var(--text-accent);
+}
+
+/* deferred / scheduled */
+.markdown-rendered .task-list-item[data-task=">"] input[type="checkbox"],
+.markdown-rendered .task-list-item[data-task="<"] input[type="checkbox"],
+.HyperMD-task-line[data-task=">"] input[type="checkbox"],
+.HyperMD-task-line[data-task="<"] input[type="checkbox"] {
+  border-color: var(--color-cyan);
+}
+.markdown-rendered .task-list-item[data-task=">"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task=">"] input[type="checkbox"]::after {
+  content: "→";
+  color: var(--color-cyan);
+}
+.markdown-rendered .task-list-item[data-task="<"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="<"] input[type="checkbox"]::after {
+  content: "←";
+  color: var(--color-cyan);
+}
+
+/* important */
+.markdown-rendered .task-list-item[data-task="!"] input[type="checkbox"],
+.HyperMD-task-line[data-task="!"] input[type="checkbox"] {
+  border-color: var(--color-orange);
+  background: rgba(247, 107, 21, 0.12);
+}
+.markdown-rendered .task-list-item[data-task="!"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="!"] input[type="checkbox"]::after {
+  content: "!";
+  color: var(--color-orange);
+}
+
+/* question */
+.markdown-rendered .task-list-item[data-task="?"] input[type="checkbox"],
+.HyperMD-task-line[data-task="?"] input[type="checkbox"] {
+  border-color: var(--color-purple);
+}
+.markdown-rendered .task-list-item[data-task="?"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="?"] input[type="checkbox"]::after {
+  content: "?";
+  color: var(--color-purple);
+}
+
+/* star */
+.markdown-rendered .task-list-item[data-task="*"] input[type="checkbox"],
+.HyperMD-task-line[data-task="*"] input[type="checkbox"] {
+  border-color: var(--color-yellow);
+}
+.markdown-rendered .task-list-item[data-task="*"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="*"] input[type="checkbox"]::after {
+  content: "★";
+  color: var(--color-yellow);
+}
+
+/* quote */
+.markdown-rendered .task-list-item[data-task="\""] input[type="checkbox"],
+.HyperMD-task-line[data-task="\""] input[type="checkbox"] {
+  border-color: var(--text-muted);
+}
+.markdown-rendered .task-list-item[data-task="\""] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="\""] input[type="checkbox"]::after {
+  content: "❞";
+  color: var(--text-muted);
+}
+
+/* location */
+.markdown-rendered .task-list-item[data-task="l"] input[type="checkbox"],
+.HyperMD-task-line[data-task="l"] input[type="checkbox"] {
+  border-color: var(--color-green);
+}
+.markdown-rendered .task-list-item[data-task="l"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="l"] input[type="checkbox"]::after {
+  content: "◉";
+  color: var(--color-green);
+}
+
+/* bookmark */
+.markdown-rendered .task-list-item[data-task="b"] input[type="checkbox"],
+.HyperMD-task-line[data-task="b"] input[type="checkbox"] {
+  border-color: var(--color-blue);
+}
+.markdown-rendered .task-list-item[data-task="b"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="b"] input[type="checkbox"]::after {
+  content: "»";
+  color: var(--color-blue);
+}
+
+/* info */
+.markdown-rendered .task-list-item[data-task="i"] input[type="checkbox"],
+.HyperMD-task-line[data-task="i"] input[type="checkbox"] {
+  border-color: var(--color-blue);
+}
+.markdown-rendered .task-list-item[data-task="i"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="i"] input[type="checkbox"]::after {
+  content: "i";
+  color: var(--color-blue);
+}
+
+/* idea */
+.markdown-rendered .task-list-item[data-task="I"] input[type="checkbox"],
+.HyperMD-task-line[data-task="I"] input[type="checkbox"] {
+  border-color: var(--color-yellow);
+}
+.markdown-rendered .task-list-item[data-task="I"] input[type="checkbox"]::after,
+.HyperMD-task-line[data-task="I"] input[type="checkbox"]::after {
+  content: "✦";
+  color: var(--color-yellow);
+}
+
+/* done / cancelled text */
+.markdown-rendered .task-list-item[data-task="x"],
+.markdown-rendered .task-list-item[data-task="X"],
+.markdown-rendered .task-list-item[data-task="-"] {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--text-faint);
+}
+
+/* --------------------------------------------------------------------------
+   10. Lists & rules
+   -------------------------------------------------------------------------- */
+
+.markdown-rendered ul,
+.markdown-rendered ol {
+  padding-left: 0.2em;
+  padding-inline-start: 0.2em;
+  margin: 0;
+}
+.markdown-rendered .task-list-item {
+  padding-left: 0.2em;
+  padding-inline-start: 0.2em;
+  margin: 0;
+}
+.markdown-rendered li::marker {
+  color: var(--text-accent);
+}
+
+.markdown-rendered hr {
+  border: none;
+  height: 1px;
+  margin: 2em 0;
+  background: linear-gradient(90deg, transparent, var(--background-modifier-border), transparent);
+}
+
+/* --------------------------------------------------------------------------
+   11. Scrollbars & selection
+   -------------------------------------------------------------------------- */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--background-modifier-border);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-faint);
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   12. File explorer & navigation
+   -------------------------------------------------------------------------- */
+
+.nav-file-title,
+.nav-folder-title {
+  border-radius: var(--radius-s);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.nav-file-title:hover,
+.nav-folder-title:hover {
+  background: var(--background-modifier-hover);
+}
+.nav-file-title.is-active {
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.14), transparent);
+  color: var(--text-accent);
+  font-weight: 550;
+}
+.nav-file-title.is-active .nav-file-title-content {
+  color: var(--text-accent);
+}
+.nav-folder-title.is-active {
+  color: var(--text-accent);
+  font-weight: 550;
+}
+
+/* --------------------------------------------------------------------------
+   13. Tabs & titlebar
+   -------------------------------------------------------------------------- */
+
+.workspace-tab-header {
+  border-radius: var(--radius-s) var(--radius-s) 0 0;
+  transition: background 0.15s ease;
+}
+.workspace-tab-header:hover {
+  background: var(--background-modifier-hover);
+}
+.workspace-tab-header.is-active {
+  background: var(--background-primary);
+}
+.workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: var(--text-accent);
+  font-weight: 550;
+}
+.workspace-tab-header-inner-icon {
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   14. Menus, popovers & modals
+   -------------------------------------------------------------------------- */
+
+.menu,
+.popover,
+.modal,
+.prompt,
+.suggestion-container {
+  border-radius: var(--radius-l);
+  border: 1px solid var(--background-modifier-border);
+  box-shadow: 0 12px 40px var(--background-modifier-box-shadow);
+}
+.menu-item {
+  border-radius: var(--radius-s);
+  transition: background 0.12s ease;
+}
+.menu-item:hover {
+  background: var(--background-modifier-hover);
+}
+.prompt-input,
+input[type="text"],
+input[type="search"],
+textarea,
+select {
+  border-radius: var(--radius-s);
+  background: var(--background-modifier-form-field);
+  border: 1px solid var(--background-modifier-border);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.prompt-input:focus,
+input[type="text"]:focus,
+input[type="search"]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--interactive-accent);
+  box-shadow: 0 0 0 3px var(--text-selection);
+}
+
+/* --------------------------------------------------------------------------
+   15. Status bar
+   -------------------------------------------------------------------------- */
+
+.status-bar {
+  background: var(--background-secondary-alt);
+  color: var(--text-muted);
+  border-top: 1px solid var(--background-modifier-border);
+}
+.status-bar-item {
+  border-radius: var(--radius-s);
+}
+
+/* --------------------------------------------------------------------------
+   16. Search highlights
+   -------------------------------------------------------------------------- */
+
+.search-result-file-matched-text {
+  background: var(--text-selection);
+  color: var(--text-normal);
+  border-radius: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   17. Graph view (baseline via tokens)
+   -------------------------------------------------------------------------- */
+
+.graph-view.color-fill {
+  color: var(--text-muted);
+}
+.graph-view.color-fill-tag {
+  color: var(--text-accent);
+}
+.graph-view.color-line {
+  color: var(--background-modifier-border);
+}
+.graph-view.color-text {
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   18. Motion & accessibility
+   -------------------------------------------------------------------------- */
+
+button,
+.workspace-tab-header,
+.nav-file-title,
+.menu-item,
+a {
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   19. Active line, cursor & line numbers
+   -------------------------------------------------------------------------- */
+
+.cm-cursor {
+  border-left: 2px solid var(--text-accent);
+}
+.cm-activeLine {
+  background: var(--background-modifier-hover);
+}
+.cm-activeLineGutter {
+  background: var(--background-modifier-hover);
+}
+.cm-selectionBackground {
+  background: var(--text-selection) !important;
+}
+.cm-gutters {
+  background: transparent;
+  border-right: none;
+}
+.cm-lineNumbers .cm-gutterElement {
+  color: var(--text-faint);
+}
+.cm-activeLineGutter .cm-gutterElement {
+  color: var(--text-accent);
+}
+
+/* --------------------------------------------------------------------------
+   20. Frontmatter & properties
+   -------------------------------------------------------------------------- */
+
+.HyperMD-frontmatter,
+.cm-hmd-frontmatter {
+  color: var(--text-muted);
+  font-size: 0.95em;
+}
+.cm-hmd-frontmatter.cm-atom {
+  color: var(--text-accent);
+}
+
+.metadata-container {
+  margin-bottom: 1.2em;
+}
+.metadata-properties-heading {
+  color: var(--text-faint);
+  font-size: 0.82em;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.metadata-property {
+  border-radius: var(--radius-s);
+}
+.metadata-property-key {
+  color: var(--text-muted);
+}
+.metadata-property-icon {
+  color: var(--text-faint);
+}
+.metadata-property-value {
+  color: var(--text-normal);
+}
+
+/* --------------------------------------------------------------------------
+   21. Embeds & transclusions
+   -------------------------------------------------------------------------- */
+
+.markdown-embed,
+.internal-embed {
+  border: 1px solid var(--background-modifier-border);
+  border-left: 2px solid var(--text-accent);
+  border-radius: var(--radius-m);
+  background: var(--background-primary-alt);
+  padding: 0.1em 0.9em;
+}
+
+/* images & media: no accent bar / border / padding */
+.markdown-embed.image-embed,
+.markdown-embed.media-embed,
+.internal-embed.image-embed,
+.internal-embed.media-embed {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.markdown-embed-title,
+.embed-title {
+  color: var(--text-faint);
+  font-size: 0.85em;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   22. Images & media
+   -------------------------------------------------------------------------- */
+
+.markdown-rendered img {
+  display: block;
+  margin: 0.5em auto;
+  border-radius: var(--radius-m);
+  box-shadow: 0 6px 24px var(--background-modifier-box-shadow);
+}
+.image-embed.is-loaded {
+  border-radius: var(--radius-m);
+}
+
+/* --------------------------------------------------------------------------
+   23. Footnotes
+   -------------------------------------------------------------------------- */
+
+.markdown-preview-view .footnotes,
+.markdown-rendered .footnotes {
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--background-modifier-border);
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+.markdown-preview-view .footnotes > hr,
+.markdown-rendered .footnotes > hr {
+  display: none;
+}
+.markdown-preview-view .footnotes ol,
+.markdown-rendered .footnotes ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  padding-inline-start: 1.25rem;
+}
+.markdown-preview-view .footnotes li,
+.markdown-rendered .footnotes li {
+  margin: 0.35rem 0;
+}
+.markdown-preview-view .footnotes li p,
+.markdown-rendered .footnotes li p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footnote-link {
+  color: var(--text-accent);
+}
+.markdown-preview-view .footnotes a,
+.markdown-rendered .footnotes a {
+  color: var(--link-color, var(--text-accent));
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+.markdown-preview-view .footnotes a:hover,
+.markdown-rendered .footnotes a:hover {
+  text-decoration: underline;
+}
+
+/* long URLs inside footnotes: truncate, don't wreck the layout */
+.markdown-preview-view .footnotes a.external-link,
+.markdown-rendered .footnotes a.external-link {
+  display: inline-block;
+  max-width: min(60ch, 100%);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0.1em 0.35em;
+  border-radius: var(--radius-s);
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+}
+
+/* ↩︎ backref: circular button pushed to the far right */
+.markdown-preview-view .footnotes a.footnote-backref,
+.markdown-rendered .footnotes a.footnote-backref {
+  margin-left: auto;
+  flex: 0 0 auto;
+  width: 1.6em;
+  height: 1.6em;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--background-modifier-border);
+  background: transparent;
+  color: var(--text-faint);
+  text-decoration: none;
+  opacity: 0.75;
+}
+.markdown-preview-view .footnotes a.footnote-backref:hover,
+.markdown-rendered .footnotes a.footnote-backref:hover {
+  background: var(--background-secondary);
+  color: var(--text-accent);
+  opacity: 1;
+}
+
+/* gentle highlight when jumping to a footnote (#hash) */
+.markdown-preview-view .footnotes li:target,
+.markdown-rendered .footnotes li:target {
+  border-radius: var(--radius-s);
+  background: var(--text-selection);
+  box-shadow: 0 0 0 1px var(--background-modifier-border);
+  padding: 0.2rem 0.35rem;
+}
+
+/* --------------------------------------------------------------------------
+   24. Mermaid
+   -------------------------------------------------------------------------- */
+
+:root {
+  --mermaid-font-family: var(--font-interface);
+  --mermaid-font-size: 0.85em;
+  --mermaid-node-color: #eef0f4;
+  --mermaid-edge-color: #8b94a6;
+  --mermaid-background: #f7f8fa;
+  --mermaid-sequence-number-bg: #6366f1;
+  --mermaid-sequence-number-fg: #ffffff;
+}
+.theme-dark {
+  --mermaid-node-color: #1a1e27;
+  --mermaid-edge-color: #5c6474;
+  --mermaid-background: #10131a;
+}
+
+/* --------------------------------------------------------------------------
+   25. Quick switcher & command palette
+   -------------------------------------------------------------------------- */
+
+.suggestion-item {
+  border-radius: var(--radius-s);
+  padding: 0.45em 0.75em;
+  transition: background 0.12s ease;
+}
+.suggestion-item.is-selected {
+  background: var(--background-modifier-hover);
+}
+.suggestion-item .suggestion-note {
+  color: var(--text-faint);
+}
+.suggestion-item .suggestion-hotkey {
+  color: var(--text-faint);
+}
+
+/* --------------------------------------------------------------------------
+   26. Pane polish (outline, backlinks, search)
+   -------------------------------------------------------------------------- */
+
+.tree-item-self {
+  border-radius: var(--radius-s);
+  transition: background 0.12s ease;
+}
+.tree-item-self:hover {
+  background: var(--background-modifier-hover);
+}
+.tree-item-self.is-active {
+  color: var(--text-accent);
+  background: var(--text-selection);
+}
+.search-result {
+  border-radius: var(--radius-s);
+  padding: 0.3em 0.5em;
+}
+.search-result:hover {
+  background: var(--background-modifier-hover);
+}
+
+/* --------------------------------------------------------------------------
+   27. Fold & collapse indicators
+   -------------------------------------------------------------------------- */
+
+.fold-indicator,
+.collapse-indicator,
+.heading-collapse-indicator {
+  color: var(--text-faint);
+  transition: color 0.12s ease;
+}
+.fold-indicator:hover,
+.collapse-indicator:hover {
+  color: var(--text-accent);
+}
+
+/* --------------------------------------------------------------------------
+   28. View headers & resize handles
+   -------------------------------------------------------------------------- */
+
+.view-header {
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+.workspace-leaf-resize-handle:hover {
+  background: var(--interactive-accent);
+}
+
+/* --------------------------------------------------------------------------
+   29. Mobile
+   -------------------------------------------------------------------------- */
+
+.is-mobile .nav-file-title,
+.is-mobile .nav-folder-title {
+  padding: 0.5em 0.75em;
+}
+.is-mobile .menu-item {
+  padding: 0.6em 0.8em;
+}
