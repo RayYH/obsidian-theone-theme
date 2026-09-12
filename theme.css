@@ -1153,7 +1153,7 @@ a {
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .footnote-link {
@@ -1184,25 +1184,30 @@ a {
   border: 1px solid var(--background-modifier-border);
 }
 
-/* ↩︎ backref: circular button pushed to the far right */
+/* ↩︎ backref: compact glyph pushed to the far right */
 .markdown-preview-view .footnotes a.footnote-backref,
 .markdown-rendered .footnotes a.footnote-backref {
   margin-left: auto;
   flex: 0 0 auto;
-  width: 1.6em;
-  height: 1.6em;
-  display: inline-grid;
-  place-items: center;
-  border-radius: 999px;
-  border: 1px solid var(--background-modifier-border);
+  width: auto;
+  height: auto;
+  display: inline-block;
+  padding: 0;
+  border: none;
   background: transparent;
   color: var(--text-faint);
   text-decoration: none;
   opacity: 0.75;
+  line-height: 1;
+}
+/* group consecutive backrefs tightly */
+.markdown-preview-view .footnotes a.footnote-backref + a.footnote-backref,
+.markdown-rendered .footnotes a.footnote-backref + a.footnote-backref {
+  margin-left: -0.25rem;
 }
 .markdown-preview-view .footnotes a.footnote-backref:hover,
 .markdown-rendered .footnotes a.footnote-backref:hover {
-  background: var(--background-secondary);
+  background: transparent;
   color: var(--text-accent);
   opacity: 1;
 }
