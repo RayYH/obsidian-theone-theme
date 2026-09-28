@@ -1,7 +1,129 @@
 /* ==========================================================================
    TheOne — a cool-modern Obsidian theme
    Light + dark · indigo→violet accent · rounded · system sans
+
+   Configurable via the "Style Settings" community plugin.
    ========================================================================== */
+
+/* @settings
+
+name: TheOne
+id: theone
+settings:
+  -
+    id: theone-layout-heading
+    title: Layout
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: file-line-width
+    title: Content width
+    description: Maximum width of the editing/reading column
+    type: variable-number-slider
+    default: 700
+    min: 400
+    max: 1400
+    step: 20
+    format: px
+  -
+    id: font-text-size
+    title: Base font size
+    type: variable-number-slider
+    default: 16
+    min: 14
+    max: 22
+    step: 1
+    format: px
+  -
+    id: theone-accent-heading
+    title: Accent Color
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: accent-h
+    title: Accent hue
+    description: Recolors links, bold text, tags, active items, checkboxes and gradients
+    type: variable-number-slider
+    default: 239
+    min: 0
+    max: 360
+    step: 1
+  -
+    id: accent-s
+    title: Accent saturation
+    type: variable-number-slider
+    default: 84
+    min: 0
+    max: 100
+    step: 1
+    format: '%'
+  -
+    id: accent-l
+    title: Accent lightness
+    type: variable-number-slider
+    default: 67
+    min: 30
+    max: 85
+    step: 1
+    format: '%'
+  -
+    id: theone-headings-heading
+    title: Headings
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: theone-plain-h1
+    title: Simplify H1
+    description: Remove the gradient title and framed box
+    type: class-toggle
+    default: false
+  -
+    id: theone-plain-headings
+    title: Simplify H2–H4
+    description: Remove the underline, left bar and dot decorations
+    type: class-toggle
+    default: false
+  -
+    id: theone-emphasis-heading
+    title: Emphasis
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: theone-plain-emphasis
+    title: Plain bold & italic
+    description: Remove the accent color from bold and italic text
+    type: class-toggle
+    default: false
+  -
+    id: theone-shape-heading
+    title: Shape
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: theone-sharp-corners
+    title: Sharp corners
+    description: Replace rounded corners with crisp edges
+    type: class-toggle
+    default: false
+  -
+    id: theone-callouts-heading
+    title: Callouts
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: theone-flat-callouts
+    title: Flat callouts
+    description: Remove the tinted background, keep the colored bar
+    type: class-toggle
+    default: false
+
+*/
 
 /* --------------------------------------------------------------------------
    1. Design tokens
@@ -12,6 +134,10 @@
   --font-interface: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-text: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-monospace: "SF Mono", "JetBrains Mono", "Fira Code", ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+  --font-text-size: 16px;
+
+  /* layout — overridable via Style Settings */
+  --file-line-width: 700px;
 
   /* radius scale */
   --radius-s: 6px;
@@ -38,21 +164,22 @@
   --text-muted: #5b6474;
   --text-faint: #9aa3b2;
 
-  --text-accent: #6366f1;
-  --text-accent-hover: #4f46e5;
+  /* accent (HSL, drives Obsidian's accent system and every accent color below — configurable via Style Settings) */
+  --accent-h: 239;
+  --accent-s: 84%;
+  --accent-l: 67%;
+  --accent-h2: calc(var(--accent-h) + 28);
+
+  --text-accent: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
+  --text-accent-hover: hsl(var(--accent-h) var(--accent-s) calc(var(--accent-l) - 10%));
   --text-on-accent: #ffffff;
-  --text-selection: rgba(99, 102, 241, 0.16);
+  --text-selection: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.16);
 
   /* interactive */
   --interactive-normal: #e8ebf1;
   --interactive-hover: #dde1e9;
-  --interactive-accent: #6366f1;
-  --interactive-accent-hover: #4f46e5;
-
-  /* accent (HSL, drives Obsidian's accent system) */
-  --accent-h: 239;
-  --accent-s: 84%;
-  --accent-l: 67%;
+  --interactive-accent: var(--text-accent);
+  --interactive-accent-hover: var(--text-accent-hover);
 
   /* semantic colors */
   --color-red: #e5484d;
@@ -74,7 +201,7 @@
   --color-pink-rgb: 219, 39, 119;
   --text-muted-rgb: 91, 100, 116;
 
-  --accent-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+  --accent-gradient: linear-gradient(135deg, hsl(var(--accent-h) var(--accent-s) var(--accent-l)), hsl(var(--accent-h2) var(--accent-s) var(--accent-l)));
 
   /* links & lists */
   --link-color: var(--text-accent);
@@ -103,19 +230,19 @@
   --text-muted: #8b94a6;
   --text-faint: #5c6474;
 
-  --text-accent: #818cf8;
-  --text-accent-hover: #a5b4fc;
-  --text-on-accent: #10131a;
-  --text-selection: rgba(129, 140, 248, 0.24);
-
-  --interactive-normal: #232936;
-  --interactive-hover: #2b3140;
-  --interactive-accent: #818cf8;
-  --interactive-accent-hover: #a5b4fc;
-
   --accent-h: 234;
   --accent-s: 89%;
   --accent-l: 74%;
+
+  --text-accent: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
+  --text-accent-hover: hsl(var(--accent-h) var(--accent-s) calc(var(--accent-l) + 10%));
+  --text-on-accent: #10131a;
+  --text-selection: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.24);
+
+  --interactive-normal: #232936;
+  --interactive-hover: #2b3140;
+  --interactive-accent: var(--text-accent);
+  --interactive-accent-hover: var(--text-accent-hover);
 
   --color-red: #f87171;
   --color-orange: #fb923c;
@@ -136,7 +263,7 @@
   --color-pink-rgb: 244, 114, 182;
   --text-muted-rgb: 139, 148, 166;
 
-  --accent-gradient: linear-gradient(135deg, #818cf8, #c084fc);
+  --accent-gradient: linear-gradient(135deg, hsl(var(--accent-h) var(--accent-s) var(--accent-l)), hsl(var(--accent-h2) var(--accent-s) var(--accent-l)));
 
   --link-color: var(--text-accent);
   --link-color-hover: var(--text-accent-hover);
@@ -162,6 +289,16 @@ body {
 :focus-visible {
   outline: 2px solid var(--interactive-accent);
   outline-offset: 1px;
+}
+
+/* content width — configurable via Style Settings ("Content width") */
+.markdown-source-view.mod-cm6 .cm-sizer,
+.markdown-source-view.mod-cm6 .cm-contentContainer,
+.markdown-reading-view .markdown-preview-sizer,
+.markdown-preview-view .markdown-preview-sizer {
+  max-width: var(--file-line-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* --------------------------------------------------------------------------
@@ -430,7 +567,7 @@ a:hover {
 
 .markdown-rendered mark,
 .cm-highlight {
-  background: rgba(99, 102, 241, 0.18);
+  background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.18);
   color: inherit;
   border-radius: 3px;
   padding: 0.05em 0.2em;
@@ -442,9 +579,9 @@ a:hover {
 
 a.tag,
 .cm-hashtag {
-  background: rgba(99, 102, 241, 0.09);
+  background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.09);
   color: var(--text-accent);
-  border: 1px solid rgba(99, 102, 241, 0.16);
+  border: 1px solid hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.16);
   border-radius: 999px;
   padding: 1px 10px;
   font-size: 0.82em;
@@ -597,10 +734,10 @@ a.tag:hover,
   padding: 0.5em 0.85em;
 }
 .markdown-rendered tbody tr:nth-child(even) {
-  background: rgba(99, 102, 241, 0.03);
+  background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.03);
 }
 .markdown-rendered tbody tr:hover {
-  background: rgba(99, 102, 241, 0.06);
+  background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.06);
 }
 
 /* --------------------------------------------------------------------------
@@ -880,7 +1017,7 @@ input.task-list-item-checkbox::after {
   background: var(--background-modifier-hover);
 }
 .nav-file-title.is-active {
-  background: linear-gradient(90deg, rgba(99, 102, 241, 0.14), transparent);
+  background: linear-gradient(90deg, hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.14), transparent);
   color: var(--text-accent);
   font-weight: 550;
 }
@@ -1231,7 +1368,7 @@ a {
   --mermaid-node-color: #eef0f4;
   --mermaid-edge-color: #8b94a6;
   --mermaid-background: #f7f8fa;
-  --mermaid-sequence-number-bg: #6366f1;
+  --mermaid-sequence-number-bg: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
   --mermaid-sequence-number-fg: #ffffff;
 }
 .theme-dark {
@@ -1319,4 +1456,71 @@ a {
 }
 .is-mobile .menu-item {
   padding: 0.6em 0.8em;
+}
+
+/* --------------------------------------------------------------------------
+   30. Style Settings overrides
+   -------------------------------------------------------------------------- */
+
+/* Simplify H1: drop the gradient title + framed box */
+body.theone-plain-h1 .markdown-rendered h1 {
+  background-image: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: initial;
+  color: var(--text-normal);
+  border-color: var(--background-modifier-border);
+  box-shadow: none;
+}
+body.theone-plain-h1 .markdown-rendered h1::after {
+  display: none;
+}
+body.theone-plain-h1 .markdown-rendered h1 code {
+  -webkit-text-fill-color: var(--text-accent);
+}
+
+/* Simplify H2–H4: drop underline / left bar / dot */
+body.theone-plain-headings .markdown-rendered h2 {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+body.theone-plain-headings .markdown-rendered h2::after {
+  display: none;
+}
+body.theone-plain-headings .markdown-rendered h3 {
+  padding-left: 0;
+}
+body.theone-plain-headings .markdown-rendered h3::before {
+  display: none;
+}
+body.theone-plain-headings .markdown-rendered h4::before {
+  display: none;
+}
+
+/* Plain bold & italic: no accent color */
+body.theone-plain-emphasis .markdown-rendered strong,
+body.theone-plain-emphasis .cm-strong {
+  color: var(--text-normal);
+}
+body.theone-plain-emphasis .markdown-rendered em,
+body.theone-plain-emphasis .cm-em {
+  color: inherit;
+}
+body.theone-plain-emphasis .markdown-rendered strong em,
+body.theone-plain-emphasis .markdown-rendered em strong {
+  background-image: none;
+  -webkit-text-fill-color: initial;
+  color: var(--text-normal);
+}
+
+/* Sharp corners: flatten the whole radius scale at once */
+body.theone-sharp-corners {
+  --radius-s: 2px;
+  --radius-m: 2px;
+  --radius-l: 2px;
+}
+
+/* Flat callouts: keep the colored bar, drop the tinted background */
+body.theone-flat-callouts .callout {
+  background: var(--background-primary-alt);
 }
