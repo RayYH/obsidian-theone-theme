@@ -1302,6 +1302,18 @@ a {
   border-radius: var(--radius-m);
 }
 
+/* PDF export / print: drop the shadow — its blur spreads past the small
+   margin and bleeds into surrounding text on the printed/exported page */
+@media print {
+  .markdown-rendered img {
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .image-embed.is-loaded {
+    border-radius: 0;
+  }
+}
+
 /* --------------------------------------------------------------------------
    23. Footnotes
    -------------------------------------------------------------------------- */
