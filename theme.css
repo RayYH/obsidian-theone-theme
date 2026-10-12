@@ -69,6 +69,39 @@ settings:
     step: 1
     format: '%'
   -
+    id: theone-links-heading
+    title: Links
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: link-h
+    title: Wikilink hue
+    description: Color of [[wikilinks]] — kept separate from the accent hue so it never matches bold/italic
+    type: variable-number-slider
+    default: 212
+    min: 0
+    max: 360
+    step: 1
+  -
+    id: link-s
+    title: Wikilink saturation
+    type: variable-number-slider
+    default: 88
+    min: 0
+    max: 100
+    step: 1
+    format: '%'
+  -
+    id: link-l
+    title: Wikilink lightness
+    type: variable-number-slider
+    default: 52
+    min: 30
+    max: 85
+    step: 1
+    format: '%'
+  -
     id: theone-headings-heading
     title: Headings
     type: heading
@@ -203,9 +236,15 @@ settings:
 
   --accent-gradient: linear-gradient(135deg, hsl(var(--accent-h) var(--accent-s) var(--accent-l)), hsl(var(--accent-h2) var(--accent-s) var(--accent-l)));
 
+  /* wikilinks — a dedicated hue, distinct from the bold/italic accent (configurable via Style Settings) */
+  --link-h: 212;
+  --link-s: 88%;
+  --link-l: 52%;
+  --link-h2: calc(var(--link-h) + 25);
+
   /* links & lists */
-  --link-color: var(--text-accent);
-  --link-color-hover: var(--text-accent-hover);
+  --link-color: hsl(var(--link-h) var(--link-s) var(--link-l));
+  --link-color-hover: hsl(var(--link-h) var(--link-s) calc(var(--link-l) - 10%));
   --link-external-color: var(--color-cyan);
   --link-external-color-hover: var(--color-cyan);
   --list-indent: 1.25em;
@@ -265,8 +304,12 @@ settings:
 
   --accent-gradient: linear-gradient(135deg, hsl(var(--accent-h) var(--accent-s) var(--accent-l)), hsl(var(--accent-h2) var(--accent-s) var(--accent-l)));
 
-  --link-color: var(--text-accent);
-  --link-color-hover: var(--text-accent-hover);
+  --link-h: 208;
+  --link-s: 92%;
+  --link-l: 70%;
+
+  --link-color: hsl(var(--link-h) var(--link-s) var(--link-l));
+  --link-color-hover: hsl(var(--link-h) var(--link-s) calc(var(--link-l) + 10%));
   --link-external-color: var(--color-cyan);
   --link-external-color-hover: var(--color-cyan);
 }
@@ -476,25 +519,25 @@ body {
 a,
 .cm-link,
 .cm-url {
-  color: var(--text-accent);
+  color: var(--link-color);
   text-decoration: none;
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 a:hover {
-  color: var(--text-accent-hover);
+  color: var(--link-color-hover);
 }
 
-/* Wikilinks — [[Note]] — indigo */
+/* Wikilinks — [[Note]] — a dedicated blue, distinct from indigo bold / violet italic */
 .markdown-rendered a.internal-link,
 .cm-hmd-internal-link {
-  color: var(--text-accent);
+  color: var(--link-color);
   font-weight: 500;
   text-decoration: none;
 }
 .markdown-rendered a.internal-link:hover,
 .cm-hmd-internal-link:hover {
   text-decoration: none;
-  background-image: linear-gradient(90deg, var(--text-accent), var(--color-purple));
+  background-image: linear-gradient(90deg, var(--link-color), hsl(var(--link-h2) var(--link-s) var(--link-l)));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
