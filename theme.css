@@ -36,6 +36,18 @@ settings:
     step: 1
     format: px
   -
+    id: theone-text-heading
+    title: Text
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: theone-justify-text
+    title: Justify text
+    description: "Justify paragraph text and enable hyphenation (hyphens: auto) so justified lines don't get ugly gaps"
+    type: class-toggle
+    default: false
+  -
     id: theone-accent-heading
     title: Accent Color
     type: heading
@@ -1578,4 +1590,22 @@ body.theone-sharp-corners {
 /* Flat callouts: keep the colored bar, drop the tinted background */
 body.theone-flat-callouts .callout {
   background: var(--background-primary-alt);
+}
+
+/* Justify text: bundled with hyphenation on purpose — justified text with
+   no hyphenation produces uneven word-spacing and ugly rivers of
+   whitespace, so the two are never offered independently. Note: actual
+   hyphenation requires Obsidian/the document to report a language (lang
+   attribute); without one, hyphens: auto silently has no effect. */
+body.theone-justify-text .markdown-rendered p,
+body.theone-justify-text .markdown-rendered li,
+body.theone-justify-text .markdown-rendered blockquote,
+body.theone-justify-text .callout-content p,
+body.theone-justify-text .callout-content li,
+body.theone-justify-text .cm-line {
+  text-align: justify;
+  text-justify: inter-word;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
