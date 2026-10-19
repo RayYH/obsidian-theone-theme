@@ -114,6 +114,49 @@ settings:
     step: 1
     format: '%'
   -
+    id: theone-highlights-heading
+    title: Highlights
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: mark-h
+    title: Highlight hue
+    description: "Color of ==highlighted== text — a dedicated hue, independent of the accent/link colors"
+    type: variable-number-slider
+    default: 48
+    min: 0
+    max: 360
+    step: 1
+  -
+    id: mark-s
+    title: Highlight saturation
+    type: variable-number-slider
+    default: 95
+    min: 0
+    max: 100
+    step: 1
+    format: '%'
+  -
+    id: mark-l
+    title: Highlight lightness
+    type: variable-number-slider
+    default: 60
+    min: 30
+    max: 85
+    step: 1
+    format: '%'
+  -
+    id: mark-a
+    title: Highlight intensity
+    description: Opacity of the highlight stroke
+    type: variable-number-slider
+    default: 65
+    min: 15
+    max: 100
+    step: 5
+    format: '%'
+  -
     id: theone-headings-heading
     title: Headings
     type: heading
@@ -254,6 +297,13 @@ settings:
   --link-l: 52%;
   --link-h2: calc(var(--link-h) + 25);
 
+  /* highlights — a dedicated warm hue, distinct from accent/link (configurable via Style Settings) */
+  --mark-h: 48;
+  --mark-s: 95%;
+  --mark-l: 60%;
+  --mark-a: 65%;
+  --mark-fg: inherit;
+
   /* links & lists */
   --link-color: hsl(var(--link-h) var(--link-s) var(--link-l));
   --link-color-hover: hsl(var(--link-h) var(--link-s) calc(var(--link-l) - 10%));
@@ -319,6 +369,12 @@ settings:
   --link-h: 208;
   --link-s: 92%;
   --link-l: 70%;
+
+  --mark-h: 45;
+  --mark-s: 90%;
+  --mark-l: 58%;
+  --mark-a: 85%;
+  --mark-fg: var(--background-primary);
 
   --link-color: hsl(var(--link-h) var(--link-s) var(--link-l));
   --link-color-hover: hsl(var(--link-h) var(--link-s) calc(var(--link-l) + 10%));
@@ -620,12 +676,39 @@ a:hover {
 
 /* Highlights -------------------------------------------------------------- */
 
+/* a hand-drawn highlighter stroke: a soft brush-shaped band sitting mostly
+   below the text, in its own warm hue — never confused with accent-colored
+   bold/links/tags. Configurable via Style Settings ("Highlights"). */
 .markdown-rendered mark,
 .cm-highlight {
-  background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.18);
-  color: inherit;
-  border-radius: 3px;
-  padding: 0.05em 0.2em;
+  background-image: linear-gradient(
+    100deg,
+    transparent 0%,
+    hsl(var(--mark-h) var(--mark-s) var(--mark-l) / var(--mark-a)) 10%,
+    hsl(var(--mark-h) var(--mark-s) var(--mark-l) / var(--mark-a)) 90%,
+    transparent 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 0.58em;
+  background-position: 0 85%;
+  color: var(--mark-fg);
+  padding: 0 0.05em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* dark mode: the translucent stroke goes muddy against a dark page, and
+   text above the stripe (ascenders/caps) would lose contrast if we forced
+   dark ink everywhere — so dark mode gets an opaque chip instead, like a
+   real highlighter marker, rather than the partial-height stroke */
+.theme-dark .markdown-rendered mark,
+.theme-dark .cm-highlight {
+  background-image: none;
+  background-color: hsl(var(--mark-h) var(--mark-s) var(--mark-l) / var(--mark-a));
+  background-size: auto;
+  background-position: initial;
+  border-radius: 4px;
+  padding: 0.04em 0.3em;
 }
 
 /* --------------------------------------------------------------------------
