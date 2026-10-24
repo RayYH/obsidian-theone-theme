@@ -52,6 +52,18 @@ settings:
         value: theone-palette-lagoon
       - label: Graphite — silver and soft charcoal
         value: theone-palette-graphite
+      - label: Glacier — ice blue and polar white
+        value: theone-palette-glacier
+      - label: Midnight — electric blue and deep navy
+        value: theone-palette-midnight
+      - label: Steel — slate blue and brushed silver
+        value: theone-palette-steel
+      - label: Mint — frosted mint and pine shadow
+        value: theone-palette-mint
+      - label: Periwinkle — blue violet and moonlight
+        value: theone-palette-periwinkle
+      - label: Aurora — glacial teal and violet
+        value: theone-palette-aurora
   -
     id: theone-layout-heading
     title: Layout
@@ -197,7 +209,7 @@ settings:
   -
     id: mark-a
     title: Highlight intensity
-    description: Opacity of the highlight stroke
+    description: Strength of the translucent highlight tint
     type: variable-number-slider
     default: 65
     min: 15
@@ -356,7 +368,7 @@ settings:
   --mark-s: 95%;
   --mark-l: 60%;
   --mark-a: 65%;
-  --mark-fg: inherit;
+  --mark-fg: var(--text-normal);
 
   /* links & lists */
   --link-color: hsl(var(--link-h) var(--link-s) var(--link-l));
@@ -428,7 +440,7 @@ settings:
   --mark-s: 90%;
   --mark-l: 58%;
   --mark-a: 85%;
-  --mark-fg: var(--background-primary);
+  --mark-fg: var(--text-normal);
 
   --link-color: hsl(var(--link-h) var(--link-s) var(--link-l));
   --link-color-hover: hsl(var(--link-h) var(--link-s) calc(var(--link-l) + 10%));
@@ -720,39 +732,18 @@ a:hover {
 
 /* Highlights -------------------------------------------------------------- */
 
-/* a hand-drawn highlighter stroke: a soft brush-shaped band sitting mostly
-   below the text, in its own warm hue — never confused with accent-colored
-   bold/links/tags. Configurable via Style Settings ("Highlights"). */
+/* A translucent wash keeps normal ink readable in both color modes.
+   Intensity scales the tint, rather than turning highlights into solid chips. */
 .markdown-rendered mark,
-.cm-highlight {
-  background-image: linear-gradient(
-    100deg,
-    transparent 0%,
-    hsl(var(--mark-h) var(--mark-s) var(--mark-l) / var(--mark-a)) 10%,
-    hsl(var(--mark-h) var(--mark-s) var(--mark-l) / var(--mark-a)) 90%,
-    transparent 100%
-  );
-  background-repeat: no-repeat;
-  background-size: 100% 0.58em;
-  background-position: 0 85%;
+.markdown-source-view.mod-cm6 .cm-highlight {
   color: var(--mark-fg);
-  padding: 0 0.05em;
+  -webkit-text-fill-color: currentColor;
+  background: hsl(var(--mark-h) var(--mark-s) var(--mark-l) / calc(var(--mark-a) * 0.3));
+  box-shadow: inset 0 -1px 0 hsl(var(--mark-h) var(--mark-s) var(--mark-l) / calc(var(--mark-a) * 0.5));
+  border-radius: 3px;
+  padding: 0.02em 0.12em;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-}
-
-/* dark mode: the translucent stroke goes muddy against a dark page, and
-   text above the stripe (ascenders/caps) would lose contrast if we forced
-   dark ink everywhere — so dark mode gets an opaque chip instead, like a
-   real highlighter marker, rather than the partial-height stroke */
-.theme-dark .markdown-rendered mark,
-.theme-dark .cm-highlight {
-  background-image: none;
-  background-color: hsl(var(--mark-h) var(--mark-s) var(--mark-l) / var(--mark-a));
-  background-size: auto;
-  background-position: initial;
-  border-radius: 4px;
-  padding: 0.04em 0.3em;
 }
 
 /* --------------------------------------------------------------------------
@@ -1384,27 +1375,117 @@ a {
   color: var(--text-accent);
 }
 
+/* A single quiet card; individual fields reveal their edges only on focus. */
 .metadata-container {
-  margin-bottom: 1.2em;
+  --metadata-background: var(--background-primary);
+  --metadata-border-color: var(--background-modifier-border);
+  --metadata-border-radius: var(--radius-l);
+  --metadata-border-width: 1px;
+  --metadata-padding: 1rem;
+  --metadata-gap: 3px;
+  --metadata-property-padding: 0.3rem 0.5rem;
+  --metadata-property-radius: var(--radius-s);
+  --metadata-property-background: transparent;
+  --metadata-property-background-hover: var(--background-modifier-hover);
+  --metadata-property-background-active: var(--background-modifier-hover);
+  --metadata-label-text-color: var(--text-muted);
+  --metadata-input-text-color: var(--text-normal);
+  box-sizing: border-box;
+  margin-bottom: 1.5em;
+  padding: var(--metadata-padding);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-l);
+  background: var(--background-primary);
 }
-.metadata-properties-heading {
-  color: var(--text-faint);
-  font-size: 0.82em;
-  font-weight: 650;
+.metadata-container .metadata-properties-heading {
+  margin-bottom: 0.6rem;
+  color: var(--text-muted);
+  font-size: 0.8em;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
 }
-.metadata-property {
+.metadata-container .metadata-property {
+  min-height: 2.2rem;
+  padding: var(--metadata-property-padding);
+  border: none;
   border-radius: var(--radius-s);
+  background: transparent;
 }
-.metadata-property-key {
+.metadata-container .metadata-property:hover,
+.metadata-container .metadata-property:focus-within {
+  background: var(--background-modifier-hover);
+}
+.metadata-container .metadata-property-key {
+  min-width: 0;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.metadata-container .metadata-property-icon {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+.metadata-container .metadata-property-value {
+  min-width: 0;
+  color: var(--text-normal);
+  font-weight: 400;
+}
+/* Override generic form controls without changing native property editors. */
+.metadata-container .metadata-property :is(input[type="text"], input[type="search"], input[type="number"], textarea),
+.metadata-container .metadata-property .multi-select-container {
+  max-width: 100%;
+  color: inherit;
+  font-family: var(--font-interface);
+  font-size: inherit;
+  font-weight: 400;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: none;
+}
+.metadata-container .metadata-property :is(input[type="text"], input[type="search"], input[type="number"], textarea):focus {
+  border-color: var(--background-modifier-border);
+  background: var(--background-primary);
+  box-shadow: none;
+}
+.metadata-container .multi-select-container {
+  gap: 0.35rem;
+}
+.metadata-container .multi-select-pill {
+  padding: 0.12em 0.55em;
+  border: 1px solid hsl(var(--accent-h) var(--accent-s) var(--accent-l) / 0.16);
+  border-radius: var(--radius-m);
+  background: hsl(var(--accent-h) var(--accent-s) var(--accent-l) / 0.08);
+  color: var(--text-accent);
+  font-size: 0.9em;
+  font-weight: 500;
+}
+.metadata-container .multi-select-pill-remove-button {
   color: var(--text-muted);
 }
-.metadata-property-icon {
-  color: var(--text-faint);
-}
-.metadata-property-value {
+.metadata-container .multi-select-pill-remove-button:hover {
   color: var(--text-normal);
+}
+.metadata-container .metadata-property-value :is(a, .internal-link) {
+  overflow-wrap: anywhere;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+.metadata-container .metadata-add-button {
+  margin-top: 0.6rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-s);
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+.metadata-container .metadata-add-button:hover {
+  color: var(--text-accent);
+  background: var(--background-modifier-hover);
+}
+.is-mobile .metadata-container {
+  --metadata-padding: 0.65rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -2598,4 +2679,258 @@ body.theme-dark.theone-palette-graphite {
   --background-modifier-form-field-highlighted: #3b3e44;
   --interactive-normal: #232529;
   --interactive-hover: #3b3e44;
+}
+
+/* Cool collection: icy surfaces and cool-toned highlights. */
+body.theme-light.theone-palette-glacier {
+  --accent-h: 195;
+  --accent-s: 72%;
+  --accent-l: 33%;
+  --link-h: 225;
+  --link-s: 68%;
+  --link-l: 38%;
+  --mark-h: 184;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 45%;
+  --background-primary: #f2faff;
+  --background-primary-alt: #e3f0f8;
+  --background-secondary: #e3f0f8;
+  --background-secondary-alt: #e3f0f8;
+  --background-modifier-border: #cbdfea;
+  --background-modifier-form-field: #f2faff;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #e3f0f8;
+  --interactive-hover: #cbdfea;
+}
+body.theme-dark.theone-palette-glacier {
+  --accent-h: 195;
+  --accent-s: 72%;
+  --accent-l: 74%;
+  --link-h: 225;
+  --link-s: 68%;
+  --link-l: 76%;
+  --mark-h: 184;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 85%;
+  --background-primary: #0e1c28;
+  --background-primary-alt: #172b3a;
+  --background-secondary: #172b3a;
+  --background-secondary-alt: #0e1c28;
+  --background-modifier-border: #2c4659;
+  --background-modifier-form-field: #172b3a;
+  --background-modifier-form-field-highlighted: #2c4659;
+  --interactive-normal: #172b3a;
+  --interactive-hover: #2c4659;
+}
+body.theme-light.theone-palette-midnight {
+  --accent-h: 228;
+  --accent-s: 78%;
+  --accent-l: 38%;
+  --link-h: 192;
+  --link-s: 72%;
+  --link-l: 32%;
+  --mark-h: 202;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 45%;
+  --background-primary: #f5f7ff;
+  --background-primary-alt: #e9edfa;
+  --background-secondary: #e9edfa;
+  --background-secondary-alt: #e9edfa;
+  --background-modifier-border: #d2daf0;
+  --background-modifier-form-field: #f5f7ff;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #e9edfa;
+  --interactive-hover: #d2daf0;
+}
+body.theme-dark.theone-palette-midnight {
+  --accent-h: 228;
+  --accent-s: 78%;
+  --accent-l: 74%;
+  --link-h: 192;
+  --link-s: 72%;
+  --link-l: 76%;
+  --mark-h: 202;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 85%;
+  --background-primary: #0b1020;
+  --background-primary-alt: #141e33;
+  --background-secondary: #141e33;
+  --background-secondary-alt: #0b1020;
+  --background-modifier-border: #293a58;
+  --background-modifier-form-field: #141e33;
+  --background-modifier-form-field-highlighted: #293a58;
+  --interactive-normal: #141e33;
+  --interactive-hover: #293a58;
+}
+body.theme-light.theone-palette-steel {
+  --accent-h: 210;
+  --accent-s: 24%;
+  --accent-l: 38%;
+  --link-h: 234;
+  --link-s: 35%;
+  --link-l: 38%;
+  --mark-h: 205;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 45%;
+  --background-primary: #f5f8fa;
+  --background-primary-alt: #e8eef2;
+  --background-secondary: #e8eef2;
+  --background-secondary-alt: #e8eef2;
+  --background-modifier-border: #d2dce4;
+  --background-modifier-form-field: #f5f8fa;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #e8eef2;
+  --interactive-hover: #d2dce4;
+}
+body.theme-dark.theone-palette-steel {
+  --accent-h: 210;
+  --accent-s: 24%;
+  --accent-l: 74%;
+  --link-h: 234;
+  --link-s: 35%;
+  --link-l: 76%;
+  --mark-h: 205;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 85%;
+  --background-primary: #171e25;
+  --background-primary-alt: #222d37;
+  --background-secondary: #222d37;
+  --background-secondary-alt: #171e25;
+  --background-modifier-border: #3a4958;
+  --background-modifier-form-field: #222d37;
+  --background-modifier-form-field-highlighted: #3a4958;
+  --interactive-normal: #222d37;
+  --interactive-hover: #3a4958;
+}
+body.theme-light.theone-palette-mint {
+  --accent-h: 164;
+  --accent-s: 54%;
+  --accent-l: 31%;
+  --link-h: 207;
+  --link-s: 63%;
+  --link-l: 38%;
+  --mark-h: 155;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 45%;
+  --background-primary: #f1fbf8;
+  --background-primary-alt: #e2f2ec;
+  --background-secondary: #e2f2ec;
+  --background-secondary-alt: #e2f2ec;
+  --background-modifier-border: #c9e3d9;
+  --background-modifier-form-field: #f1fbf8;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #e2f2ec;
+  --interactive-hover: #c9e3d9;
+}
+body.theme-dark.theone-palette-mint {
+  --accent-h: 164;
+  --accent-s: 54%;
+  --accent-l: 74%;
+  --link-h: 207;
+  --link-s: 63%;
+  --link-l: 76%;
+  --mark-h: 155;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 85%;
+  --background-primary: #101f1d;
+  --background-primary-alt: #1a302b;
+  --background-secondary: #1a302b;
+  --background-secondary-alt: #101f1d;
+  --background-modifier-border: #304b43;
+  --background-modifier-form-field: #1a302b;
+  --background-modifier-form-field-highlighted: #304b43;
+  --interactive-normal: #1a302b;
+  --interactive-hover: #304b43;
+}
+body.theme-light.theone-palette-periwinkle {
+  --accent-h: 246;
+  --accent-s: 58%;
+  --accent-l: 38%;
+  --link-h: 200;
+  --link-s: 65%;
+  --link-l: 37%;
+  --mark-h: 218;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 45%;
+  --background-primary: #f7f7ff;
+  --background-primary-alt: #edecfa;
+  --background-secondary: #edecfa;
+  --background-secondary-alt: #edecfa;
+  --background-modifier-border: #dad8ee;
+  --background-modifier-form-field: #f7f7ff;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #edecfa;
+  --interactive-hover: #dad8ee;
+}
+body.theme-dark.theone-palette-periwinkle {
+  --accent-h: 246;
+  --accent-s: 58%;
+  --accent-l: 74%;
+  --link-h: 200;
+  --link-s: 65%;
+  --link-l: 76%;
+  --mark-h: 218;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 85%;
+  --background-primary: #18182b;
+  --background-primary-alt: #23243c;
+  --background-secondary: #23243c;
+  --background-secondary-alt: #18182b;
+  --background-modifier-border: #3b3d5b;
+  --background-modifier-form-field: #23243c;
+  --background-modifier-form-field-highlighted: #3b3d5b;
+  --interactive-normal: #23243c;
+  --interactive-hover: #3b3d5b;
+}
+body.theme-light.theone-palette-aurora {
+  --accent-h: 181;
+  --accent-s: 64%;
+  --accent-l: 29%;
+  --link-h: 265;
+  --link-s: 55%;
+  --link-l: 38%;
+  --mark-h: 173;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 45%;
+  --background-primary: #f1fbfc;
+  --background-primary-alt: #e2f2f3;
+  --background-secondary: #e2f2f3;
+  --background-secondary-alt: #e2f2f3;
+  --background-modifier-border: #c9e1e5;
+  --background-modifier-form-field: #f1fbfc;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #e2f2f3;
+  --interactive-hover: #c9e1e5;
+}
+body.theme-dark.theone-palette-aurora {
+  --accent-h: 181;
+  --accent-s: 64%;
+  --accent-l: 74%;
+  --link-h: 265;
+  --link-s: 55%;
+  --link-l: 76%;
+  --mark-h: 173;
+  --mark-s: 65%;
+  --mark-l: 76%;
+  --mark-a: 85%;
+  --background-primary: #0d1d24;
+  --background-primary-alt: #162e36;
+  --background-secondary: #162e36;
+  --background-secondary-alt: #0d1d24;
+  --background-modifier-border: #2a4852;
+  --background-modifier-form-field: #162e36;
+  --background-modifier-form-field-highlighted: #2a4852;
+  --interactive-normal: #162e36;
+  --interactive-hover: #2a4852;
 }
