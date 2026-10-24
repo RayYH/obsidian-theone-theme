@@ -11,6 +11,32 @@ name: TheOne
 id: theone
 settings:
   -
+    id: theone-colors-heading
+    title: Color palette
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: theone-palette
+    title: Palette
+    description: "Coordinated surfaces, accents, links and highlights in light and dark mode. Choose Custom to use the color sliders below."
+    type: class-select
+    allowEmpty: false
+    default: theone-palette-custom
+    options:
+      - label: Custom (original colors and sliders)
+        value: theone-palette-custom
+      - label: Iris — indigo and lavender
+        value: theone-palette-iris
+      - label: Ocean — teal and sea glass
+        value: theone-palette-ocean
+      - label: Forest — sage and moss
+        value: theone-palette-forest
+      - label: Rose — rosewood and blush
+        value: theone-palette-rose
+      - label: Ember — terracotta and warm paper
+        value: theone-palette-ember
+  -
     id: theone-layout-heading
     title: Layout
     type: heading
@@ -26,6 +52,12 @@ settings:
     max: 1400
     step: 20
     format: px
+  -
+    id: theone-content-frame
+    title: Frame the whole note
+    description: Add a spacious, rounded border around the note in Reading view and the editor.
+    type: class-toggle
+    default: false
   -
     id: font-text-size
     title: Base font size
@@ -56,7 +88,7 @@ settings:
   -
     id: accent-h
     title: Accent hue
-    description: Recolors links, bold text, tags, active items, checkboxes and gradients
+    description: Recolors bold text, tags, active items, checkboxes and gradients in the Custom palette
     type: variable-number-slider
     default: 239
     min: 0
@@ -75,7 +107,7 @@ settings:
     id: accent-l
     title: Accent lightness
     type: variable-number-slider
-    default: 67
+    default: 48
     min: 30
     max: 85
     step: 1
@@ -108,7 +140,7 @@ settings:
     id: link-l
     title: Wikilink lightness
     type: variable-number-slider
-    default: 52
+    default: 44
     min: 30
     max: 85
     step: 1
@@ -255,7 +287,7 @@ settings:
   /* accent (HSL, drives Obsidian's accent system and every accent color below — configurable via Style Settings) */
   --accent-h: 239;
   --accent-s: 84%;
-  --accent-l: 67%;
+  --accent-l: 48%;
   --accent-h2: calc(var(--accent-h) + 28);
 
   --text-accent: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
@@ -294,7 +326,7 @@ settings:
   /* wikilinks — a dedicated hue, distinct from the bold/italic accent (configurable via Style Settings) */
   --link-h: 212;
   --link-s: 88%;
-  --link-l: 52%;
+  --link-l: 44%;
   --link-h2: calc(var(--link-h) + 25);
 
   /* highlights — a dedicated warm hue, distinct from accent/link (configurable via Style Settings) */
@@ -446,47 +478,41 @@ body {
 }
 
 .markdown-rendered h1,
-.HyperMD-header-1,
-.cm-header-1 {
+.HyperMD-header-1 {
   font-size: 1.85em;
   margin-top: 1.6em;
   margin-bottom: 0.4em;
 }
 .markdown-rendered h2,
-.HyperMD-header-2,
-.cm-header-2 {
+.HyperMD-header-2 {
   font-size: 1.5em;
   font-weight: 700;
   margin-top: 1.6em;
   margin-bottom: 0.7em;
 }
 .markdown-rendered h3,
-.HyperMD-header-3,
-.cm-header-3 {
+.HyperMD-header-3 {
   font-size: 1.25em;
   font-weight: 700;
   margin-top: 1.3em;
   margin-bottom: 0.45em;
 }
 .markdown-rendered h4,
-.HyperMD-header-4,
-.cm-header-4 {
+.HyperMD-header-4 {
   font-size: 1.08em;
   font-weight: 600;
   margin-top: 1.1em;
   margin-bottom: 0.3em;
 }
 .markdown-rendered h5,
-.HyperMD-header-5,
-.cm-header-5 {
+.HyperMD-header-5 {
   font-size: 0.98em;
   font-weight: 600;
   margin-top: 1em;
   color: var(--text-accent);
 }
 .markdown-rendered h6,
-.HyperMD-header-6,
-.cm-header-6 {
+.HyperMD-header-6 {
   font-size: 0.82em;
   font-weight: 700;
   color: var(--text-muted);
@@ -546,14 +572,14 @@ body {
   line-height: 1.2;
   letter-spacing: -0.02em;
   text-align: center;
-  margin: 1.4rem auto 1.2rem !important;
+  margin: 1.4rem auto 1.2rem;
   padding: 0.7rem 1.1rem;
-  border: 1px solid var(--background-modifier-border) !important;
-  border-radius: 16px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-l);
   background-image: var(--accent-gradient);
   background-clip: text;
   -webkit-background-clip: text;
-  color: transparent;
+  color: var(--text-accent);
   -webkit-text-fill-color: transparent;
   box-shadow: 0 10px 40px -18px var(--text-selection);
 }
@@ -571,7 +597,7 @@ body {
   .markdown-rendered h1 {
     font-size: 1.5em;
     padding: 0.55rem 0.8rem;
-    border-radius: 12px;
+    border-radius: var(--radius-l);
   }
 }
 
@@ -628,8 +654,8 @@ a:hover {
 
 /* Inline code ------------------------------------------------------------- */
 
-.markdown-rendered code,
-.cm-inline-code {
+.markdown-rendered :not(pre) > code,
+.markdown-source-view.mod-cm6 .cm-inline-code {
   font-family: var(--font-monospace);
   font-size: 0.9em;
   color: var(--text-accent);
@@ -653,7 +679,7 @@ a:hover {
   color: var(--color-purple);
 }
 
-/* bold + italic — indigo→violet gradient */
+/* Solid emphasis composes with code, links and highlights without transparent ink. */
 .markdown-rendered strong em,
 .markdown-rendered em strong,
 .cm-strong.cm-em,
@@ -661,11 +687,7 @@ a:hover {
 .cm-strong .cm-em {
   font-weight: 700;
   font-style: italic;
-  background-image: var(--accent-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+  color: var(--text-accent);
 }
 
 .markdown-rendered del,
@@ -820,10 +842,7 @@ a.tag:hover,
    6. Code blocks
    -------------------------------------------------------------------------- */
 
-.markdown-rendered pre,
-.HyperMD-codeblock,
-.cm-s-obsidian .HyperMD-codeblock-begin-bg,
-.cm-s-obsidian .HyperMD-codeblock-end-bg {
+.markdown-rendered pre {
   background: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--radius-l);
@@ -834,10 +853,24 @@ a.tag:hover,
 }
 
 .markdown-rendered pre code {
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: normal;
   background: transparent;
   border: none;
   padding: 0;
   color: var(--text-normal);
+}
+
+/* CM6 draws the fence background; per-line boxes break the continuous block. */
+.markdown-source-view.mod-cm6 {
+  --code-background: var(--background-secondary);
+  --code-normal: var(--text-normal);
+  --code-size: 0.9em;
+  --code-radius: var(--radius-l);
+}
+.markdown-source-view.mod-cm6 .HyperMD-codeblock {
+  font-family: var(--font-monospace);
 }
 
 /* subtle syntax colors */
@@ -1438,9 +1471,6 @@ a {
 .markdown-preview-view .footnotes li p,
 .markdown-rendered .footnotes li p {
   margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
 }
 
 .footnote-link {
@@ -1474,8 +1504,7 @@ a {
 /* ↩︎ backref: compact glyph pushed to the far right */
 .markdown-preview-view .footnotes a.footnote-backref,
 .markdown-rendered .footnotes a.footnote-backref {
-  margin-left: auto;
-  flex: 0 0 auto;
+  margin-left: 0.35em;
   width: auto;
   height: auto;
   display: inline-block;
@@ -1515,16 +1544,16 @@ a {
 :root {
   --mermaid-font-family: var(--font-interface);
   --mermaid-font-size: 0.85em;
-  --mermaid-node-color: #eef0f4;
+  --mermaid-node-color: var(--background-secondary);
   --mermaid-edge-color: #8b94a6;
-  --mermaid-background: #f7f8fa;
+  --mermaid-background: var(--background-primary);
   --mermaid-sequence-number-bg: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
   --mermaid-sequence-number-fg: #ffffff;
 }
 .theme-dark {
-  --mermaid-node-color: #1a1e27;
+  --mermaid-node-color: var(--background-secondary);
   --mermaid-edge-color: #5c6474;
-  --mermaid-background: #10131a;
+  --mermaid-background: var(--background-primary);
 }
 
 /* --------------------------------------------------------------------------
@@ -1619,7 +1648,9 @@ body.theone-plain-h1 .markdown-rendered h1 {
   background-clip: initial;
   -webkit-text-fill-color: initial;
   color: var(--text-normal);
-  border-color: var(--background-modifier-border);
+  border: none;
+  padding: 0;
+  text-align: start;
   box-shadow: none;
 }
 body.theone-plain-h1 .markdown-rendered h1::after {
@@ -1657,7 +1688,10 @@ body.theone-plain-emphasis .cm-em {
   color: inherit;
 }
 body.theone-plain-emphasis .markdown-rendered strong em,
-body.theone-plain-emphasis .markdown-rendered em strong {
+body.theone-plain-emphasis .markdown-rendered em strong,
+body.theone-plain-emphasis .cm-strong.cm-em,
+body.theone-plain-emphasis .cm-em .cm-strong,
+body.theone-plain-emphasis .cm-strong .cm-em {
   background-image: none;
   -webkit-text-fill-color: initial;
   color: var(--text-normal);
@@ -1691,4 +1725,384 @@ body.theone-justify-text .cm-line {
   -webkit-hyphens: auto;
   -ms-hyphens: auto;
   hyphens: auto;
+}
+
+/* --------------------------------------------------------------------------
+   31. Composable inline formatting & reading polish
+   -------------------------------------------------------------------------- */
+
+/* Explicit ink stops an H1's inherited transparent fill at semantic children. */
+.markdown-rendered h1 :is(a, strong, em, mark, code) {
+  -webkit-text-fill-color: currentColor;
+}
+.markdown-rendered a :is(strong, em),
+.markdown-rendered :is(strong, em) a,
+.markdown-source-view.mod-cm6 :is(.cm-link, .cm-hmd-internal-link):is(.cm-strong, .cm-em) {
+  color: var(--link-color);
+}
+.markdown-rendered mark :is(strong, em),
+.markdown-source-view.mod-cm6 .cm-highlight:is(.cm-strong, .cm-em) {
+  color: var(--mark-fg);
+  -webkit-text-fill-color: currentColor;
+}
+.markdown-rendered :not(pre) > code,
+.markdown-source-view.mod-cm6 .cm-inline-code {
+  color: var(--text-accent);
+  -webkit-text-fill-color: currentColor;
+  background-image: none;
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.markdown-rendered :not(pre) > code :is(strong, em) {
+  color: inherit;
+}
+.markdown-rendered a:has(code) code {
+  color: var(--link-color);
+}
+.markdown-rendered a.internal-link:hover {
+  background-image: none;
+  -webkit-text-fill-color: currentColor;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.markdown-rendered :is(p, li, blockquote) {
+  overflow-wrap: anywhere;
+}
+.markdown-rendered pre {
+  overflow-x: auto;
+  box-shadow: 0 2px 8px var(--background-modifier-box-shadow);
+}
+.markdown-rendered pre code {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+.markdown-rendered a {
+  text-underline-offset: 0.18em;
+}
+
+/* Resolve derived colors on the body where Obsidian and Style Settings put
+   overrides. Values computed on :root otherwise inherit the original hue. */
+body {
+  --accent-h2: calc(var(--accent-h) + 28);
+  --link-h2: calc(var(--link-h) + 25);
+  --text-accent: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
+  --text-accent-hover: hsl(var(--accent-h) var(--accent-s) calc(var(--accent-l) - 8%));
+  --interactive-accent: var(--text-accent);
+  --interactive-accent-hover: var(--text-accent-hover);
+  --text-selection: hsl(var(--accent-h) var(--accent-s) var(--accent-l) / 0.16);
+  --accent-gradient: linear-gradient(135deg, var(--text-accent), hsl(var(--accent-h2) var(--accent-s) var(--accent-l)));
+  --link-color: hsl(var(--link-h) var(--link-s) var(--link-l));
+  --link-color-hover: hsl(var(--link-h) var(--link-s) calc(var(--link-l) - 8%));
+  --link-external-color: var(--color-cyan);
+  --link-external-color-hover: var(--color-cyan);
+  --mermaid-node-color: var(--background-secondary);
+  --mermaid-background: var(--background-primary);
+  --mermaid-sequence-number-bg: var(--text-accent);
+}
+body.theme-dark {
+  --text-accent-hover: hsl(var(--accent-h) var(--accent-s) calc(var(--accent-l) + 8%));
+  --link-color-hover: hsl(var(--link-h) var(--link-s) calc(var(--link-l) + 8%));
+  --text-selection: hsl(var(--accent-h) var(--accent-s) var(--accent-l) / 0.24);
+}
+
+/* Palettes set the existing public HSL tokens directly. Custom leaves sliders
+   untouched; preset selectors also beat previously saved slider declarations. */
+body.theme-light.theone-palette-iris {
+  --accent-h: 250;
+  --accent-s: 72%;
+  --accent-l: 47%;
+  --link-h: 218;
+  --link-s: 65%;
+  --link-l: 44%;
+  --mark-h: 42;
+  --mark-s: 85%;
+  --mark-l: 68%;
+  --mark-a: 55%;
+  --background-primary: #f8f7fc;
+  --background-primary-alt: #efedf6;
+  --background-secondary: #efedf6;
+  --background-secondary-alt: #efedf6;
+  --background-modifier-border: #e2deed;
+  --background-modifier-form-field: #f8f7fc;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #efedf6;
+  --interactive-hover: #e2deed;
+}
+body.theme-dark.theone-palette-iris {
+  --accent-h: 250;
+  --accent-s: 65%;
+  --accent-l: 74%;
+  --link-h: 218;
+  --link-s: 75%;
+  --link-l: 76%;
+  --mark-h: 42;
+  --mark-s: 85%;
+  --mark-l: 68%;
+  --mark-a: 85%;
+  --background-primary: #17151f;
+  --background-primary-alt: #201d2b;
+  --background-secondary: #201d2b;
+  --background-secondary-alt: #17151f;
+  --background-modifier-border: #353044;
+  --background-modifier-form-field: #201d2b;
+  --background-modifier-form-field-highlighted: #353044;
+  --interactive-normal: #201d2b;
+  --interactive-hover: #353044;
+}
+body.theme-light.theone-palette-ocean {
+  --accent-h: 185;
+  --accent-s: 76%;
+  --accent-l: 30%;
+  --link-h: 211;
+  --link-s: 65%;
+  --link-l: 42%;
+  --mark-h: 42;
+  --mark-s: 85%;
+  --mark-l: 68%;
+  --mark-a: 55%;
+  --background-primary: #f5fafb;
+  --background-primary-alt: #e9f2f4;
+  --background-secondary: #e9f2f4;
+  --background-secondary-alt: #e9f2f4;
+  --background-modifier-border: #d7e5e8;
+  --background-modifier-form-field: #f5fafb;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #e9f2f4;
+  --interactive-hover: #d7e5e8;
+}
+body.theme-dark.theone-palette-ocean {
+  --accent-h: 185;
+  --accent-s: 65%;
+  --accent-l: 74%;
+  --link-h: 211;
+  --link-s: 75%;
+  --link-l: 76%;
+  --mark-h: 42;
+  --mark-s: 85%;
+  --mark-l: 68%;
+  --mark-a: 85%;
+  --background-primary: #101b21;
+  --background-primary-alt: #18262d;
+  --background-secondary: #18262d;
+  --background-secondary-alt: #101b21;
+  --background-modifier-border: #2c4049;
+  --background-modifier-form-field: #18262d;
+  --background-modifier-form-field-highlighted: #2c4049;
+  --interactive-normal: #18262d;
+  --interactive-hover: #2c4049;
+}
+body.theme-light.theone-palette-forest {
+  --accent-h: 151;
+  --accent-s: 42%;
+  --accent-l: 30%;
+  --link-h: 190;
+  --link-s: 65%;
+  --link-l: 34%;
+  --mark-h: 65;
+  --mark-s: 85%;
+  --mark-l: 68%;
+  --mark-a: 55%;
+  --background-primary: #f7f9f5;
+  --background-primary-alt: #edf1e8;
+  --background-secondary: #edf1e8;
+  --background-secondary-alt: #edf1e8;
+  --background-modifier-border: #dde5d7;
+  --background-modifier-form-field: #f7f9f5;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #edf1e8;
+  --interactive-hover: #dde5d7;
+}
+body.theme-dark.theone-palette-forest {
+  --accent-h: 151;
+  --accent-s: 42%;
+  --accent-l: 74%;
+  --link-h: 190;
+  --link-s: 75%;
+  --link-l: 76%;
+  --mark-h: 65;
+  --mark-s: 85%;
+  --mark-l: 68%;
+  --mark-a: 85%;
+  --background-primary: #151c18;
+  --background-primary-alt: #1d2821;
+  --background-secondary: #1d2821;
+  --background-secondary-alt: #151c18;
+  --background-modifier-border: #344438;
+  --background-modifier-form-field: #1d2821;
+  --background-modifier-form-field-highlighted: #344438;
+  --interactive-normal: #1d2821;
+  --interactive-hover: #344438;
+}
+body.theme-light.theone-palette-rose {
+  --accent-h: 340;
+  --accent-s: 57%;
+  --accent-l: 43%;
+  --link-h: 260;
+  --link-s: 65%;
+  --link-l: 45%;
+  --mark-h: 42;
+  --mark-s: 85%;
+  --mark-l: 68%;
+  --mark-a: 55%;
+  --background-primary: #fcf7f9;
+  --background-primary-alt: #f5ebef;
+  --background-secondary: #f5ebef;
+  --background-secondary-alt: #f5ebef;
+  --background-modifier-border: #eadbe2;
+  --background-modifier-form-field: #fcf7f9;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #f5ebef;
+  --interactive-hover: #eadbe2;
+}
+body.theme-dark.theone-palette-rose {
+  --accent-h: 340;
+  --accent-s: 57%;
+  --accent-l: 74%;
+  --link-h: 260;
+  --link-s: 75%;
+  --link-l: 76%;
+  --mark-h: 42;
+  --mark-s: 85%;
+  --mark-l: 68%;
+  --mark-a: 85%;
+  --background-primary: #21171d;
+  --background-primary-alt: #2c2028;
+  --background-secondary: #2c2028;
+  --background-secondary-alt: #21171d;
+  --background-modifier-border: #49333f;
+  --background-modifier-form-field: #2c2028;
+  --background-modifier-form-field-highlighted: #49333f;
+  --interactive-normal: #2c2028;
+  --interactive-hover: #49333f;
+}
+body.theme-light.theone-palette-ember {
+  --accent-h: 18;
+  --accent-s: 68%;
+  --accent-l: 38%;
+  --link-h: 194;
+  --link-s: 65%;
+  --link-l: 34%;
+  --mark-h: 42;
+  --mark-s: 85%;
+  --mark-l: 68%;
+  --mark-a: 55%;
+  --background-primary: #fcf8f2;
+  --background-primary-alt: #f3ece1;
+  --background-secondary: #f3ece1;
+  --background-secondary-alt: #f3ece1;
+  --background-modifier-border: #e7dccb;
+  --background-modifier-form-field: #fcf8f2;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #f3ece1;
+  --interactive-hover: #e7dccb;
+}
+body.theme-dark.theone-palette-ember {
+  --accent-h: 18;
+  --accent-s: 65%;
+  --accent-l: 74%;
+  --link-h: 194;
+  --link-s: 75%;
+  --link-l: 76%;
+  --mark-h: 42;
+  --mark-s: 85%;
+  --mark-l: 68%;
+  --mark-a: 85%;
+  --background-primary: #211a16;
+  --background-primary-alt: #2d241e;
+  --background-secondary: #2d241e;
+  --background-secondary-alt: #211a16;
+  --background-modifier-border: #493b30;
+  --background-modifier-form-field: #2d241e;
+  --background-modifier-form-field-highlighted: #493b30;
+  --interactive-normal: #2d241e;
+  --interactive-hover: #493b30;
+}
+
+/* --------------------------------------------------------------------------
+   32. Contained diagrams & optional note frame
+   -------------------------------------------------------------------------- */
+
+/* Keep SVG overflow inside its own viewport, including Live Preview widgets.
+   Do not constrain SVG height: tall sequence diagrams need their natural ratio. */
+.markdown-rendered .el-pre:has(.mermaid),
+.markdown-source-view.mod-cm6 .cm-preview-code-block:has(.mermaid) {
+  min-width: 0;
+  max-width: 100%;
+}
+.markdown-rendered .mermaid,
+.markdown-source-view.mod-cm6 .mermaid {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  padding: 1rem;
+  margin-block: 1.25em;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-l);
+  background: var(--background-primary-alt);
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-muted) var(--background-secondary);
+}
+.markdown-rendered .mermaid svg,
+.markdown-source-view.mod-cm6 .mermaid svg {
+  /* Fixed-width SVGs scroll; percentage-width SVGs fit but remain readable
+     on narrow panes instead of shrinking all diagram labels to tiny text. */
+  min-width: min(36rem, var(--file-line-width));
+  height: auto;
+}
+.markdown-rendered .mermaid::-webkit-scrollbar,
+.markdown-source-view.mod-cm6 .mermaid::-webkit-scrollbar {
+  height: 8px;
+}
+.markdown-rendered .mermaid::-webkit-scrollbar-track,
+.markdown-source-view.mod-cm6 .mermaid::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+  border-radius: 999px;
+}
+.markdown-rendered .mermaid::-webkit-scrollbar-thumb,
+.markdown-source-view.mod-cm6 .mermaid::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border: 2px solid var(--background-secondary);
+  border-radius: 999px;
+}
+.markdown-rendered .mermaid::-webkit-scrollbar-thumb:hover,
+.markdown-source-view.mod-cm6 .mermaid::-webkit-scrollbar-thumb:hover {
+  background: var(--text-accent);
+}
+
+/* Border-box keeps the complete frame inside the selected content width.
+   Inset space uses padding so it works with CM6's measured editor geometry. */
+body.theone-content-frame .markdown-preview-view > .markdown-preview-sizer,
+body.theone-content-frame .markdown-source-view.mod-cm6 .cm-sizer {
+  box-sizing: border-box;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-l);
+  padding-inline: clamp(1rem, 3vw, 2.5rem);
+  padding-top: 1.5rem;
+  box-shadow: 0 4px 20px var(--background-modifier-box-shadow);
+}
+
+@media print {
+  .markdown-rendered .mermaid {
+    overflow: visible;
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+  }
+  .markdown-rendered .mermaid svg {
+    min-width: 0;
+    max-width: 100%;
+  }
+  body.theone-content-frame .markdown-preview-view > .markdown-preview-sizer {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding-inline: 0;
+  }
 }
