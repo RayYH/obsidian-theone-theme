@@ -36,6 +36,22 @@ settings:
         value: theone-palette-rose
       - label: Ember — terracotta and warm paper
         value: theone-palette-ember
+      - label: Cobalt — royal blue and ink
+        value: theone-palette-cobalt
+      - label: Frost — arctic blue and cool mist
+        value: theone-palette-frost
+      - label: Plum — aubergine and lilac
+        value: theone-palette-plum
+      - label: Sakura — cherry blossom and porcelain
+        value: theone-palette-sakura
+      - label: Amber — honey and charcoal
+        value: theone-palette-amber
+      - label: Coffee — mocha and parchment
+        value: theone-palette-coffee
+      - label: Lagoon — turquoise and deep blue
+        value: theone-palette-lagoon
+      - label: Graphite — silver and soft charcoal
+        value: theone-palette-graphite
   -
     id: theone-layout-heading
     title: Layout
@@ -194,6 +210,12 @@ settings:
     type: heading
     level: 1
     collapsed: false
+  -
+    id: theone-heading-hover
+    title: Animated heading underline
+    description: A subtle accent underline sweeps from left to right on heading hover or keyboard focus, in Reading view and Live Preview. Respects reduced motion.
+    type: class-toggle
+    default: false
   -
     id: theone-plain-h1
     title: Simplify H1
@@ -1446,95 +1468,95 @@ a {
    23. Footnotes
    -------------------------------------------------------------------------- */
 
-.markdown-preview-view .footnotes,
 .markdown-rendered .footnotes {
-  margin-top: 1.5rem;
-  padding-top: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--background-modifier-border);
   color: var(--text-muted);
-  font-size: 0.9em;
+  font-size: 0.88em;
+  line-height: 1.65;
 }
-.markdown-preview-view .footnotes > hr,
 .markdown-rendered .footnotes > hr {
   display: none;
 }
-.markdown-preview-view .footnotes ol,
 .markdown-rendered .footnotes ol {
   margin: 0;
-  padding-left: 1.25rem;
-  padding-inline-start: 1.25rem;
+  padding-inline-start: 1.8em;
 }
-.markdown-preview-view .footnotes li,
 .markdown-rendered .footnotes li {
-  margin: 0.35rem 0;
+  margin: 0;
+  padding-inline-start: 0.35em;
 }
-.markdown-preview-view .footnotes li p,
+.markdown-rendered .footnotes li + li {
+  margin-top: 0.65em;
+}
+.markdown-rendered .footnotes li::marker {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
 .markdown-rendered .footnotes li p {
   margin: 0;
 }
-
+.markdown-rendered .footnotes li p + p {
+  margin-top: 0.4em;
+}
 .footnote-link {
   color: var(--text-accent);
 }
-.markdown-preview-view .footnotes a,
-.markdown-rendered .footnotes a {
-  color: var(--link-color, var(--text-accent));
-  text-decoration: none;
-  text-underline-offset: 2px;
-}
-.markdown-preview-view .footnotes a:hover,
-.markdown-rendered .footnotes a:hover {
-  text-decoration: underline;
-}
 
-/* long URLs inside footnotes: truncate, don't wreck the layout */
-.markdown-preview-view .footnotes a.external-link,
-.markdown-rendered .footnotes a.external-link {
-  display: inline-block;
-  max-width: min(60ch, 100%);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding: 0.1em 0.35em;
-  border-radius: var(--radius-s);
-  background: var(--background-secondary);
-  border: 1px solid var(--background-modifier-border);
-}
-
-/* ↩︎ backref: compact glyph pushed to the far right */
-.markdown-preview-view .footnotes a.footnote-backref,
-.markdown-rendered .footnotes a.footnote-backref {
-  margin-left: 0.35em;
-  width: auto;
-  height: auto;
-  display: inline-block;
+/* Footnote links remain part of the sentence, including long URLs. */
+.markdown-rendered .footnotes a:not(.footnote-backref) {
+  display: inline;
   padding: 0;
   border: none;
-  background: transparent;
-  color: var(--text-faint);
-  text-decoration: none;
-  opacity: 0.75;
-  line-height: 1;
+  border-radius: 0;
+  background: none;
+  color: var(--link-color);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-decoration-color: var(--background-modifier-border);
+  text-underline-offset: 0.18em;
 }
-/* group consecutive backrefs tightly */
-.markdown-preview-view .footnotes a.footnote-backref + a.footnote-backref,
-.markdown-rendered .footnotes a.footnote-backref + a.footnote-backref {
-  margin-left: -0.25rem;
-}
-.markdown-preview-view .footnotes a.footnote-backref:hover,
-.markdown-rendered .footnotes a.footnote-backref:hover {
-  background: transparent;
-  color: var(--text-accent);
-  opacity: 1;
+.markdown-rendered .footnotes a:not(.footnote-backref):hover {
+  color: var(--link-color-hover);
+  text-decoration-color: currentColor;
 }
 
-/* gentle highlight when jumping to a footnote (#hash) */
-.markdown-preview-view .footnotes li:target,
+/* Use one compact return glyph; suppress Obsidian's external-link icon. */
+.markdown-rendered .footnotes a.footnote-backref {
+  display: inline-block;
+  vertical-align: baseline;
+  margin-inline-start: 0.3rem;
+  padding: 0 0.12rem;
+  border: none;
+  border-radius: 3px;
+  background: none;
+  color: var(--text-muted);
+  font-size: 0;
+  line-height: 1;
+  text-decoration: none;
+}
+.markdown-rendered .footnotes a.footnote-backref::before {
+  content: "\21A9";
+  font-family: var(--font-interface);
+  font-size: calc(var(--font-text-size) * 0.8);
+}
+.markdown-rendered .footnotes a.footnote-backref::after {
+  display: none;
+}
+.markdown-rendered .footnotes a.footnote-backref + a.footnote-backref {
+  margin-inline-start: 0.2rem;
+}
+.markdown-rendered .footnotes a.footnote-backref:hover {
+  color: var(--text-accent);
+  background: var(--text-selection);
+}
 .markdown-rendered .footnotes li:target {
   border-radius: var(--radius-s);
   background: var(--text-selection);
-  box-shadow: 0 0 0 1px var(--background-modifier-border);
-  padding: 0.2rem 0.35rem;
+  box-shadow: 0 0 0 4px var(--text-selection);
 }
 
 /* --------------------------------------------------------------------------
@@ -1602,15 +1624,91 @@ a {
    27. Fold & collapse indicators
    -------------------------------------------------------------------------- */
 
-.fold-indicator,
-.collapse-indicator,
-.heading-collapse-indicator {
-  color: var(--text-faint);
-  transition: color 0.12s ease;
+/* Reading view: reserve a gutter outside the heading decoration. Obsidian
+   still controls visibility and the SVG's collapsed/expanded rotation. */
+.markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
+  position: relative;
 }
-.fold-indicator:hover,
-.collapse-indicator:hover {
-  color: var(--text-accent);
+.markdown-rendered .heading-collapse-indicator {
+  position: absolute;
+  inset-inline-start: -1.65rem;
+  inset-inline-end: auto;
+  top: 0.1em;
+  float: none;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  line-height: 1;
+  text-align: center;
+  border-radius: 3px;
+  -webkit-text-fill-color: currentColor;
+  cursor: pointer;
+  z-index: 1;
+}
+.markdown-rendered h1 .heading-collapse-indicator {
+  top: 0.7rem;
+}
+body.theone-plain-h1 .markdown-rendered h1 .heading-collapse-indicator {
+  top: 0.1em;
+}
+
+/* Decorative marks never intercept folding, text selection or hover. */
+.markdown-rendered :is(h1, h2)::after,
+.markdown-rendered :is(h3, h4)::before {
+  pointer-events: none;
+}
+
+/* Keep native hit areas and reveal behavior for lists, editor gutters,
+   callouts and navigation trees; only unify their interaction colors. */
+.markdown-rendered :is(.heading-collapse-indicator, .list-collapse-indicator),
+.markdown-source-view.mod-cm6 .collapse-indicator,
+.markdown-source-view.mod-cm6 .cm-fold-indicator,
+.tree-item-self .collapse-icon,
+.callout .callout-fold {
+  color: var(--text-muted);
+  border-radius: var(--radius-s);
+  transition: color 0.12s ease, background-color 0.12s ease;
+}
+.markdown-rendered :is(.heading-collapse-indicator, .list-collapse-indicator):hover,
+.markdown-source-view.mod-cm6 .collapse-indicator:hover,
+.markdown-source-view.mod-cm6 .cm-fold-indicator:hover,
+.tree-item-self .collapse-icon:hover,
+.callout .callout-fold:hover {
+  color: var(--text-normal);
+  background-color: transparent;
+}
+.markdown-rendered :is(.heading-collapse-indicator, .list-collapse-indicator):focus-visible,
+.markdown-source-view.mod-cm6 .collapse-indicator:focus-visible {
+  color: var(--text-normal);
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+}
+
+/* Collapsed headings use the same neutral ink as expanded ones. Native
+   Obsidian otherwise accents collapsed arrows even when they are not hovered. */
+.markdown-rendered,
+.markdown-source-view.mod-cm6 {
+  --collapse-icon-color: var(--text-muted);
+  --collapse-icon-color-collapsed: var(--text-muted);
+}
+.markdown-rendered .heading-collapse-indicator,
+.markdown-rendered .is-collapsed .heading-collapse-indicator,
+.markdown-rendered .heading-collapse-indicator.is-collapsed {
+  color: var(--text-muted);
+  background: transparent;
+}
+.markdown-rendered .heading-collapse-indicator:hover {
+  color: var(--text-normal);
+}
+.markdown-rendered .heading-collapse-indicator svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 1.75px;
 }
 
 /* --------------------------------------------------------------------------
@@ -2082,7 +2180,7 @@ body.theone-content-frame .markdown-source-view.mod-cm6 .cm-sizer {
   box-sizing: border-box;
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--radius-l);
-  padding-inline: clamp(1rem, 3vw, 2.5rem);
+  padding-inline: clamp(2rem, 3vw, 2.5rem);
   padding-top: 1.5rem;
   box-shadow: 0 4px 20px var(--background-modifier-box-shadow);
 }
@@ -2105,4 +2203,399 @@ body.theone-content-frame .markdown-source-view.mod-cm6 .cm-sizer {
     box-shadow: none;
     padding-inline: 0;
   }
+}
+
+/* --------------------------------------------------------------------------
+   33. Optional heading hover underline
+   -------------------------------------------------------------------------- */
+
+/* Reuse ::after so H1/H2 never acquire a second competing underline.
+   Absolute positioning keeps text and folding controls stationary. */
+body.theone-heading-hover .markdown-source-view.mod-cm6.is-live-preview .cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6) {
+  position: relative;
+}
+body.theone-heading-hover .markdown-rendered :is(h1, h2, h3, h4, h5, h6)::after,
+body.theone-heading-hover .markdown-source-view.mod-cm6.is-live-preview .cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6)::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -0.16em;
+  width: min(100%, 12rem);
+  height: 2px;
+  margin: 0;
+  border-radius: 999px;
+  background: var(--accent-gradient);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 240ms ease-out, opacity 160ms ease-out;
+  pointer-events: none;
+}
+body.theone-heading-hover .markdown-rendered h1::after {
+  left: 1.1rem;
+  bottom: 0.3rem;
+  width: calc(100% - 2.2rem);
+}
+body.theone-heading-hover.theone-plain-h1 .markdown-rendered h1::after {
+  left: 0;
+  bottom: -0.16em;
+  width: min(100%, 12rem);
+}
+body.theone-heading-hover .markdown-rendered h2::after {
+  bottom: -1px;
+}
+body.theone-heading-hover .markdown-rendered :is(h1, h2, h3, h4, h5, h6):is(:hover, :focus-within)::after,
+body.theone-heading-hover .markdown-source-view.mod-cm6.is-live-preview .cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6):is(:hover, :focus-within)::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  body.theone-heading-hover .markdown-rendered :is(h1, h2, h3, h4, h5, h6)::after,
+  body.theone-heading-hover .markdown-source-view.mod-cm6.is-live-preview .cm-line::after {
+    transition: none;
+  }
+}
+@media print {
+  body.theone-heading-hover .markdown-rendered :is(h1, h2, h3, h4, h5, h6)::after {
+    display: none;
+  }
+}
+
+/* Additional palettes: coordinated light and dark surfaces. */
+body.theme-light.theone-palette-cobalt {
+  --accent-h: 224;
+  --accent-s: 76%;
+  --accent-l: 38%;
+  --link-h: 194;
+  --link-s: 70%;
+  --link-l: 33%;
+  --mark-h: 45;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 50%;
+  --background-primary: #f6f8fd;
+  --background-primary-alt: #eaf0fa;
+  --background-secondary: #eaf0fa;
+  --background-secondary-alt: #eaf0fa;
+  --background-modifier-border: #d6e0f0;
+  --background-modifier-form-field: #f6f8fd;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #eaf0fa;
+  --interactive-hover: #d6e0f0;
+}
+body.theme-dark.theone-palette-cobalt {
+  --accent-h: 224;
+  --accent-s: 76%;
+  --accent-l: 74%;
+  --link-h: 194;
+  --link-s: 70%;
+  --link-l: 76%;
+  --mark-h: 45;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 85%;
+  --background-primary: #101829;
+  --background-primary-alt: #19243a;
+  --background-secondary: #19243a;
+  --background-secondary-alt: #101829;
+  --background-modifier-border: #2d3e59;
+  --background-modifier-form-field: #19243a;
+  --background-modifier-form-field-highlighted: #2d3e59;
+  --interactive-normal: #19243a;
+  --interactive-hover: #2d3e59;
+}
+body.theme-light.theone-palette-frost {
+  --accent-h: 202;
+  --accent-s: 46%;
+  --accent-l: 38%;
+  --link-h: 242;
+  --link-s: 45%;
+  --link-l: 38%;
+  --mark-h: 48;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 50%;
+  --background-primary: #f4f8fa;
+  --background-primary-alt: #e8eff3;
+  --background-secondary: #e8eff3;
+  --background-secondary-alt: #e8eff3;
+  --background-modifier-border: #d5e0e7;
+  --background-modifier-form-field: #f4f8fa;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #e8eff3;
+  --interactive-hover: #d5e0e7;
+}
+body.theme-dark.theone-palette-frost {
+  --accent-h: 202;
+  --accent-s: 46%;
+  --accent-l: 74%;
+  --link-h: 242;
+  --link-s: 45%;
+  --link-l: 76%;
+  --mark-h: 48;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 85%;
+  --background-primary: #18212b;
+  --background-primary-alt: #222e3b;
+  --background-secondary: #222e3b;
+  --background-secondary-alt: #18212b;
+  --background-modifier-border: #39495b;
+  --background-modifier-form-field: #222e3b;
+  --background-modifier-form-field-highlighted: #39495b;
+  --interactive-normal: #222e3b;
+  --interactive-hover: #39495b;
+}
+body.theme-light.theone-palette-plum {
+  --accent-h: 283;
+  --accent-s: 48%;
+  --accent-l: 38%;
+  --link-h: 220;
+  --link-s: 65%;
+  --link-l: 38%;
+  --mark-h: 42;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 50%;
+  --background-primary: #faf6fc;
+  --background-primary-alt: #f0e9f5;
+  --background-secondary: #f0e9f5;
+  --background-secondary-alt: #f0e9f5;
+  --background-modifier-border: #e2d5eb;
+  --background-modifier-form-field: #faf6fc;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #f0e9f5;
+  --interactive-hover: #e2d5eb;
+}
+body.theme-dark.theone-palette-plum {
+  --accent-h: 283;
+  --accent-s: 48%;
+  --accent-l: 74%;
+  --link-h: 220;
+  --link-s: 65%;
+  --link-l: 76%;
+  --mark-h: 42;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 85%;
+  --background-primary: #201626;
+  --background-primary-alt: #2c2034;
+  --background-secondary: #2c2034;
+  --background-secondary-alt: #201626;
+  --background-modifier-border: #46334f;
+  --background-modifier-form-field: #2c2034;
+  --background-modifier-form-field-highlighted: #46334f;
+  --interactive-normal: #2c2034;
+  --interactive-hover: #46334f;
+}
+body.theme-light.theone-palette-sakura {
+  --accent-h: 348;
+  --accent-s: 56%;
+  --accent-l: 38%;
+  --link-h: 253;
+  --link-s: 48%;
+  --link-l: 38%;
+  --mark-h: 38;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 50%;
+  --background-primary: #fff7f8;
+  --background-primary-alt: #f8ebee;
+  --background-secondary: #f8ebee;
+  --background-secondary-alt: #f8ebee;
+  --background-modifier-border: #edd8df;
+  --background-modifier-form-field: #fff7f8;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #f8ebee;
+  --interactive-hover: #edd8df;
+}
+body.theme-dark.theone-palette-sakura {
+  --accent-h: 348;
+  --accent-s: 56%;
+  --accent-l: 74%;
+  --link-h: 253;
+  --link-s: 48%;
+  --link-l: 76%;
+  --mark-h: 38;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 85%;
+  --background-primary: #25191f;
+  --background-primary-alt: #33242c;
+  --background-secondary: #33242c;
+  --background-secondary-alt: #25191f;
+  --background-modifier-border: #503944;
+  --background-modifier-form-field: #33242c;
+  --background-modifier-form-field-highlighted: #503944;
+  --interactive-normal: #33242c;
+  --interactive-hover: #503944;
+}
+body.theme-light.theone-palette-amber {
+  --accent-h: 37;
+  --accent-s: 84%;
+  --accent-l: 32%;
+  --link-h: 205;
+  --link-s: 65%;
+  --link-l: 38%;
+  --mark-h: 48;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 50%;
+  --background-primary: #fcfaf2;
+  --background-primary-alt: #f4efdf;
+  --background-secondary: #f4efdf;
+  --background-secondary-alt: #f4efdf;
+  --background-modifier-border: #e6ddc4;
+  --background-modifier-form-field: #fcfaf2;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #f4efdf;
+  --interactive-hover: #e6ddc4;
+}
+body.theme-dark.theone-palette-amber {
+  --accent-h: 37;
+  --accent-s: 84%;
+  --accent-l: 74%;
+  --link-h: 205;
+  --link-s: 65%;
+  --link-l: 76%;
+  --mark-h: 48;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 85%;
+  --background-primary: #201d15;
+  --background-primary-alt: #2d281c;
+  --background-secondary: #2d281c;
+  --background-secondary-alt: #201d15;
+  --background-modifier-border: #49412c;
+  --background-modifier-form-field: #2d281c;
+  --background-modifier-form-field-highlighted: #49412c;
+  --interactive-normal: #2d281c;
+  --interactive-hover: #49412c;
+}
+body.theme-light.theone-palette-coffee {
+  --accent-h: 25;
+  --accent-s: 38%;
+  --accent-l: 38%;
+  --link-h: 182;
+  --link-s: 48%;
+  --link-l: 31%;
+  --mark-h: 40;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 50%;
+  --background-primary: #faf6ef;
+  --background-primary-alt: #f0e8dc;
+  --background-secondary: #f0e8dc;
+  --background-secondary-alt: #f0e8dc;
+  --background-modifier-border: #e1d4c2;
+  --background-modifier-form-field: #faf6ef;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #f0e8dc;
+  --interactive-hover: #e1d4c2;
+}
+body.theme-dark.theone-palette-coffee {
+  --accent-h: 25;
+  --accent-s: 38%;
+  --accent-l: 74%;
+  --link-h: 182;
+  --link-s: 48%;
+  --link-l: 76%;
+  --mark-h: 40;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 85%;
+  --background-primary: #211b18;
+  --background-primary-alt: #2d2520;
+  --background-secondary: #2d2520;
+  --background-secondary-alt: #211b18;
+  --background-modifier-border: #493c32;
+  --background-modifier-form-field: #2d2520;
+  --background-modifier-form-field-highlighted: #493c32;
+  --interactive-normal: #2d2520;
+  --interactive-hover: #493c32;
+}
+body.theme-light.theone-palette-lagoon {
+  --accent-h: 169;
+  --accent-s: 68%;
+  --accent-l: 28%;
+  --link-h: 218;
+  --link-s: 68%;
+  --link-l: 38%;
+  --mark-h: 65;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 50%;
+  --background-primary: #f3fbf8;
+  --background-primary-alt: #e4f3ee;
+  --background-secondary: #e4f3ee;
+  --background-secondary-alt: #e4f3ee;
+  --background-modifier-border: #cfe5dc;
+  --background-modifier-form-field: #f3fbf8;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #e4f3ee;
+  --interactive-hover: #cfe5dc;
+}
+body.theme-dark.theone-palette-lagoon {
+  --accent-h: 169;
+  --accent-s: 68%;
+  --accent-l: 74%;
+  --link-h: 218;
+  --link-s: 68%;
+  --link-l: 76%;
+  --mark-h: 65;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 85%;
+  --background-primary: #10201e;
+  --background-primary-alt: #192e2b;
+  --background-secondary: #192e2b;
+  --background-secondary-alt: #10201e;
+  --background-modifier-border: #2d4842;
+  --background-modifier-form-field: #192e2b;
+  --background-modifier-form-field-highlighted: #2d4842;
+  --interactive-normal: #192e2b;
+  --interactive-hover: #2d4842;
+}
+body.theme-light.theone-palette-graphite {
+  --accent-h: 218;
+  --accent-s: 8%;
+  --accent-l: 38%;
+  --link-h: 218;
+  --link-s: 14%;
+  --link-l: 38%;
+  --mark-h: 48;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 50%;
+  --background-primary: #f8f8f8;
+  --background-primary-alt: #eeeeef;
+  --background-secondary: #eeeeef;
+  --background-secondary-alt: #eeeeef;
+  --background-modifier-border: #dddddf;
+  --background-modifier-form-field: #f8f8f8;
+  --background-modifier-form-field-highlighted: #ffffff;
+  --interactive-normal: #eeeeef;
+  --interactive-hover: #dddddf;
+}
+body.theme-dark.theone-palette-graphite {
+  --accent-h: 218;
+  --accent-s: 8%;
+  --accent-l: 74%;
+  --link-h: 218;
+  --link-s: 14%;
+  --link-l: 76%;
+  --mark-h: 48;
+  --mark-s: 80%;
+  --mark-l: 70%;
+  --mark-a: 85%;
+  --background-primary: #191a1c;
+  --background-primary-alt: #232529;
+  --background-secondary: #232529;
+  --background-secondary-alt: #191a1c;
+  --background-modifier-border: #3b3e44;
+  --background-modifier-form-field: #232529;
+  --background-modifier-form-field-highlighted: #3b3e44;
+  --interactive-normal: #232529;
+  --interactive-hover: #3b3e44;
 }
