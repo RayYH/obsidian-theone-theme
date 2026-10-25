@@ -459,6 +459,8 @@ settings:
    -------------------------------------------------------------------------- */
 
 body {
+  --link-external-decoration: none;
+  --link-external-decoration-hover: underline;
   font-family: var(--font-interface);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -677,19 +679,21 @@ a:hover {
   -webkit-text-fill-color: transparent;
 }
 
-/* URLs — https://… — cyan + underline, distinct from wikilinks */
+/* External URLs: cyan ink, with an underline only on hover. */
 .markdown-rendered a.external-link,
 .cm-url {
   color: var(--color-cyan);
   background-image: none; /* drop the default ↗ icon */
   padding-right: 0;
   text-decoration: none;
-  border-bottom: 1px solid var(--color-cyan);
+  border-bottom: none;
 }
 .markdown-rendered a.external-link:hover,
 .cm-url:hover {
   color: var(--color-cyan);
-  border-bottom-color: var(--text-accent);
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-underline-offset: 0.18em;
 }
 
 /* Inline code ------------------------------------------------------------- */
@@ -1609,6 +1613,14 @@ a {
 .markdown-rendered .footnotes a:not(.footnote-backref):hover {
   color: var(--link-color-hover);
   text-decoration-color: currentColor;
+}
+
+/* External references follow the same hover-only underline convention. */
+.markdown-rendered .footnotes a.external-link {
+  text-decoration: none;
+}
+.markdown-rendered .footnotes a.external-link:hover {
+  text-decoration: underline;
 }
 
 /* Use one compact return glyph; suppress Obsidian's external-link icon. */
