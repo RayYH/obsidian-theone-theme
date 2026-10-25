@@ -71,6 +71,12 @@ settings:
     level: 1
     collapsed: false
   -
+    id: theone-hide-vault-switcher
+    title: Hide vault switcher
+    description: Hide the vault-name switcher. Turn off to show it, including when the Hider plugin hides the vault profile. Settings buttons remain available.
+    type: class-toggle
+    default: false
+  -
     id: file-line-width
     title: Content width
     description: Maximum width of the editing/reading column
@@ -2933,4 +2939,22 @@ body.theme-dark.theone-palette-aurora {
   --background-modifier-form-field-highlighted: #2a4852;
   --interactive-normal: #162e36;
   --interactive-hover: #2a4852;
+}
+
+/* --------------------------------------------------------------------------
+   34. Vault switcher visibility
+   -------------------------------------------------------------------------- */
+
+/* Hider hides the entire desktop footer. Keep that footer available so this
+   theme's switcher toggle never removes the settings/help controls with it.
+   Specificity deliberately exceeds Hider's desktop selector. */
+body:is(.theme-light, .theme-dark):not(.is-mobile) .workspace-split.mod-left-split .workspace-sidedock-vault-profile,
+body.hider-vault:is(.theme-light, .theme-dark):not(.is-mobile) .workspace-split.mod-left-split .workspace-sidedock-vault-profile {
+  display: flex;
+}
+body:is(.theme-light, .theme-dark):not(.theone-hide-vault-switcher) .workspace-drawer-vault-switcher {
+  display: flex;
+}
+body:is(.theme-light, .theme-dark).theone-hide-vault-switcher .workspace-drawer-vault-switcher {
+  display: none;
 }

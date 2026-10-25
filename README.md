@@ -68,7 +68,7 @@ Select **Custom** to use the accent, wikilink, and highlight sliders. Presets ov
 | Section | Controls |
 | --- | --- |
 | Color palette | Preset selection or Custom colors |
-| Layout | Content width (400–1400 px), base font size (14–22 px), optional whole-note frame |
+| Layout | Content width (400–1400 px), base font size (14–22 px), optional whole-note frame, hide vault switcher (off by default) |
 | Text | Justified paragraphs with automatic hyphenation |
 | Accent Color | Custom accent hue, saturation, and lightness |
 | Links | Custom wikilink hue, saturation, and lightness |
@@ -81,6 +81,8 @@ Select **Custom** to use the accent, wikilink, and highlight sliders. Presets ov
 **Frame the whole note** and **Animated heading underline** are off by default. The underline appears on heading hover or focus within a heading in Reading view and Live Preview. With reduced motion enabled in your operating system, it appears without the sweep animation.
 
 Automatic hyphenation depends on the document language reported by Obsidian. The selected font must also support the characters in your notes.
+
+The vault switcher is visible by default. Enable **Layout → Hide vault switcher** to hide the vault-name control while keeping the footer settings buttons. TheOne restores the desktop vault footer even if the Hider plugin has its hide-vault option enabled.
 
 ## Customization and troubleshooting
 
