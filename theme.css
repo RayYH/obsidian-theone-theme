@@ -650,6 +650,28 @@ body {
   -webkit-text-fill-color: var(--text-accent);
 }
 
+/* PDF export / print: background-clip: text + a transparent text-fill is
+   unreliable in Chromium's print pipeline — the gradient background can be
+   dropped while the fill stays transparent, leaving the title blank, or
+   render as a solid block instead of text-shaped. Fall back to a plain
+   solid-color title and a bordered underline (borders always print,
+   gradients/box-shadows don't reliably). */
+@media print {
+  .markdown-rendered h1 {
+    background-image: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    color: var(--text-accent);
+    -webkit-text-fill-color: var(--text-accent);
+    box-shadow: none;
+  }
+  .markdown-rendered h1::after {
+    background: none;
+    height: 0;
+    border-bottom: 2px solid var(--text-accent);
+  }
+}
+
 /* Links ------------------------------------------------------------------- */
 
 a,
