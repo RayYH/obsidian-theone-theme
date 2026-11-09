@@ -81,10 +81,10 @@ settings:
     title: Content width
     description: Maximum width of the editing/reading column
     type: variable-number-slider
-    default: 700
+    default: 768
     min: 400
     max: 1400
-    step: 20
+    step: 4
     format: px
   -
     id: theone-content-frame
@@ -297,7 +297,7 @@ settings:
   --font-text-size: 16px;
 
   /* layout — overridable via Style Settings */
-  --file-line-width: 700px;
+  --file-line-width: 768px;
 
   /* radius scale */
   --radius-s: 6px;
